@@ -30,14 +30,14 @@
   display: flex;
   gap: var(--space-3);
   align-items: center;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 2px;
 }
 
 .modal-icon {
   color: var(--color-accent-yellow);
   font-weight: bold;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .modal-type {
@@ -48,7 +48,7 @@
 
 .modal-corruption {
   color: var(--color-accent-red);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: bold;
 }
 
@@ -57,7 +57,7 @@
   overflow-y: auto;
   flex: 1;
   line-height: 1.8;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--color-text-primary);
   font-family: var(--font-mono);
   background: var(--color-bg-secondary);
@@ -78,7 +78,7 @@
   border: var(--border-width) solid var(--color-border);
   padding: var(--space-2) var(--space-4);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 1px;
   cursor: pointer;
   transition: all 0.1s ease;
@@ -91,7 +91,7 @@
 }
 
 .modal-hint {
-  font-size: 9px;
+  font-size: 10px;
   color: var(--color-text-dim);
   letter-spacing: 1px;
 }
@@ -103,12 +103,12 @@
   }
 
   .modal-header {
-    font-size: 10px;
+    font-size: 11px;
     padding: var(--space-2) var(--space-3);
   }
 
   .modal-content {
-    font-size: 12px;
+    font-size: 13px;
     padding: var(--space-3);
   }
 
@@ -118,7 +118,7 @@
   }
 
   .modal-hint {
-    font-size: 8px;
+    font-size: 9px;
   }
 }
 
@@ -128,6 +128,6 @@
   }
 
   .modal-content {
-    font-size: 11px;
+    font-size: 12px;
   }
 }

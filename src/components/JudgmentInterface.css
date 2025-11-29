@@ -11,7 +11,7 @@
   background: var(--color-bg-tertiary);
   border-bottom: var(--border-width) solid var(--color-border);
   padding: var(--space-3) var(--space-4);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 2px;
 }
 
@@ -65,19 +65,19 @@
 }
 
 .verdict-icon {
-  font-size: 24px;
+  font-size: 26px;
   font-weight: bold;
   margin-bottom: var(--space-2);
 }
 
 .verdict-label {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
   letter-spacing: 2px;
 }
 
 .verdict-desc {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--color-text-dim);
   text-transform: none;
   letter-spacing: 0;
@@ -110,7 +110,7 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 2px;
 }
 
@@ -149,7 +149,7 @@
     flex-direction: column;
     gap: var(--space-2);
     align-items: flex-start;
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .verdict-button {
@@ -157,19 +157,19 @@
   }
 
   .verdict-icon {
-    font-size: 20px;
+    font-size: 22px;
   }
 
   .verdict-label {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .verdict-desc {
-    font-size: 9px;
+    font-size: 10px;
   }
 
   .retirement-button {
-    font-size: 9px;
+    font-size: 10px;
     padding: var(--space-2);
   }
 }

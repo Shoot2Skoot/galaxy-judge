@@ -18,14 +18,14 @@
 }
 
 .summary-title {
-  font-size: 16px;
+  font-size: 18px;
   letter-spacing: 3px;
   font-weight: bold;
   color: var(--color-accent-yellow);
 }
 
 .summary-status {
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 2px;
   color: var(--color-text-dim);
 }
@@ -41,7 +41,7 @@
 .summary-section .section-header {
   background: var(--color-bg-primary);
   padding: var(--space-3) var(--space-4);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 2px;
   display: flex;
   gap: var(--space-2);
@@ -53,7 +53,7 @@
 .section-number {
   color: var(--color-accent-yellow);
   font-weight: bold;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .stats-grid {
@@ -77,14 +77,14 @@
 .stat-label {
   color: var(--color-text-dim);
   text-transform: uppercase;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 1px;
 }
 
 .stat-value {
   color: var(--color-text-primary);
   font-weight: bold;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .stat-green {
@@ -116,20 +116,20 @@
   color: var(--color-accent-yellow);
   font-weight: bold;
   margin-bottom: var(--space-2);
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .vignette-content {
   color: var(--color-text-primary);
   line-height: 1.8;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .epitaph-content {
   padding: var(--space-6);
   color: var(--color-text-secondary);
   line-height: 2;
-  font-size: 14px;
+  font-size: 15px;
   background: var(--color-bg-primary);
   font-style: italic;
 }
@@ -138,7 +138,7 @@
   padding: var(--space-6);
   color: var(--color-text-dim);
   text-align: center;
-  font-size: 11px;
+  font-size: 12px;
   background: var(--color-bg-primary);
 }
 
@@ -156,7 +156,7 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-3);
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 2px;
   color: var(--color-accent-green);
   font-weight: bold;
@@ -168,5 +168,5 @@
 }
 
 .action-icon {
-  font-size: 14px;
+  font-size: 15px;
 }

@@ -48,7 +48,7 @@ export default function FileModal({ file, onClose }) {
     ? corruptText(file.content, file.corruption)
     : file.content;
 
-  const corruptionPercent = Math.round(file.corruption * 100);
+  const corruptionPercent = Math.round(file.displayCorruption || 0);
 
   return (
     <div className="modal-backdrop" onClick={onClose}>

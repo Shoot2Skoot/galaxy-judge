@@ -31,7 +31,7 @@ function EvidenceSection({ title, icon, files, color }) {
             ? corruptText(file.content, file.corruption)
             : file.content;
 
-          const corruptionPercent = Math.round(file.corruption * 100);
+          const corruptionPercent = Math.round(file.displayCorruption || 0);
 
           return (
             <div key={idx} className="evidence-item">

@@ -16,7 +16,7 @@
   background: var(--color-bg-tertiary);
   border-bottom: var(--border-width) solid var(--color-border);
   padding: var(--space-3) var(--space-4);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 2px;
   color: var(--color-text-secondary);
 }
@@ -30,7 +30,7 @@
 }
 
 .loading-spinner {
-  font-size: 20px;
+  font-size: 22px;
   color: var(--color-accent-yellow);
   display: flex;
   gap: var(--space-2);
@@ -50,7 +50,7 @@
 }
 
 .loading-message {
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 2px;
   color: var(--color-text-dim);
   text-align: center;

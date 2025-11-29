@@ -1,19 +1,19 @@
 .revealed-evidence {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-2);
 }
 
 .revealed-evidence-empty {
   background: var(--color-bg-secondary);
   border: var(--border-width) solid var(--color-border);
-  padding: var(--space-6);
+  padding: var(--space-3);
   text-align: center;
 }
 
 .empty-message {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 2px;
   color: var(--color-text-dim);
 }
@@ -25,18 +25,18 @@
 
 .evidence-header {
   background: var(--color-bg-primary);
-  padding: var(--space-2) var(--space-4);
+  padding: var(--space-1) var(--space-2);
   border-bottom: var(--border-width) solid var(--color-border);
   display: flex;
-  gap: var(--space-3);
+  gap: var(--space-2);
   align-items: center;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 2px;
 }
 
 .evidence-icon {
   font-weight: bold;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .evidence-title {
@@ -47,31 +47,35 @@
 
 .evidence-count {
   color: var(--color-text-dim);
-  font-size: 9px;
+  font-size: 10px;
 }
 
 .evidence-items {
-  padding: var(--space-3);
+  padding: var(--space-2);
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 
 .evidence-item {
   background: var(--color-bg-primary);
   border: var(--border-width) solid var(--color-border);
+  display: flex;
+  gap: 0;
 }
 
 .evidence-item-header {
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-2) var(--space-2);
   background: var(--color-bg-secondary);
-  border-bottom: var(--border-width) solid var(--color-border);
+  border-right: var(--border-width) solid var(--color-border);
   display: flex;
-  gap: var(--space-2);
+  flex-direction: column;
+  gap: var(--space-1);
   align-items: center;
-  justify-content: space-between;
-  font-size: 9px;
+  justify-content: center;
+  font-size: 10px;
   letter-spacing: 1px;
+  min-width: 50px;
 }
 
 .evidence-item-number {
@@ -82,20 +86,22 @@
 .evidence-item-corruption {
   color: var(--color-accent-yellow);
   font-weight: bold;
+  font-size: 9px;
 }
 
 .evidence-item-content {
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-2) var(--space-3);
   line-height: 1.8;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--color-text-primary);
   font-family: var(--font-mono);
+  flex: 1;
 }
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .evidence-header {
-    font-size: 9px;
+    font-size: 10px;
     padding: var(--space-2) var(--space-3);
   }
 
@@ -105,7 +111,7 @@
   }
 
   .evidence-item-content {
-    font-size: 11px;
+    font-size: 12px;
     padding: var(--space-2) var(--space-3);
   }
 }
@@ -122,6 +128,6 @@
   }
 
   .empty-message {
-    font-size: 10px;
+    font-size: 11px;
   }
 }

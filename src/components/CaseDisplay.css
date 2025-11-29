@@ -1,7 +1,7 @@
 .case-display {
   background: var(--color-bg-secondary);
   border: var(--border-width-thick) solid var(--color-border);
-  margin: var(--space-4);
+  margin: var(--space-2);
 }
 
 .case-header {
@@ -10,8 +10,8 @@
   align-items: center;
   background: var(--color-bg-tertiary);
   border-bottom: var(--border-width) solid var(--color-border);
-  padding: var(--space-3) var(--space-4);
-  font-size: 11px;
+  padding: var(--space-2) var(--space-3);
+  font-size: 12px;
   letter-spacing: 2px;
 }
 
@@ -42,7 +42,7 @@
 }
 
 .info-cell {
-  padding: var(--space-4);
+  padding: var(--space-2);
   border-right: var(--border-width) solid var(--color-border);
 }
 
@@ -56,8 +56,8 @@
 
 .section-header {
   background: var(--color-bg-primary);
-  padding: var(--space-2) var(--space-4);
-  font-size: 10px;
+  padding: var(--space-1) var(--space-2);
+  font-size: 11px;
   letter-spacing: 2px;
   display: flex;
   gap: var(--space-2);
@@ -71,44 +71,45 @@
 }
 
 .section-content {
-  padding: var(--space-4);
+  padding: var(--space-2);
   line-height: 1.8;
+  font-size: 14px;
 }
 
 .crime-content {
   color: var(--color-accent-red);
   font-weight: bold;
-  font-size: 15px;
+  font-size: 16px;
 }
 
 .crime-severity {
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-2) var(--space-3);
   background: var(--color-bg-tertiary);
   border-top: var(--border-width) solid var(--color-border);
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-1);
 }
 
 .severity-label {
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 2px;
   color: var(--color-accent-yellow);
   font-weight: bold;
 }
 
 .severity-content {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--color-text-secondary);
   line-height: 1.6;
   font-style: italic;
 }
 
 .evidence-section {
-  padding: var(--space-4);
+  padding: var(--space-2);
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-2);
   background: var(--color-bg-primary);
   border-top: var(--border-width) solid var(--color-border);
 }
@@ -133,16 +134,16 @@
   }
 
   .section-content {
-    font-size: 12px;
+    font-size: 13px;
     padding: var(--space-3);
   }
 
   .crime-content {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .severity-content {
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .evidence-section {
@@ -159,19 +160,19 @@
 
   .case-header-left,
   .case-header-right {
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .data-field {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .data-label {
-    font-size: 9px;
+    font-size: 10px;
   }
 
   .section-content {
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.6;
   }
 
@@ -180,10 +181,10 @@
   }
 
   .severity-label {
-    font-size: 8px;
+    font-size: 9px;
   }
 
   .severity-content {
-    font-size: 10px;
+    font-size: 11px;
   }
 }

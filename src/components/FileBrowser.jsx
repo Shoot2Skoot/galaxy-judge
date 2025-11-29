@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { FileText, FileX } from 'phosphor-react';
 import './FileBrowser.css';
 import FileModal from './FileModal';
 
@@ -6,6 +7,7 @@ export default function FileBrowser({ prosecutionEvidence, defenseArguments, inf
   const [revealedFiles, setRevealedFiles] = useState(new Set());
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileCorruption, setFileCorruption] = useState({});
+  const [corruptedFileCount, setCorruptedFileCount] = useState(0);
 
   // Combine all files with metadata
   const allFiles = useMemo(() => {
@@ -54,14 +56,30 @@ export default function FileBrowser({ prosecutionEvidence, defenseArguments, inf
       );
     }
 
+    // Add 2-4 extra fake files to show corruption progression
+    const fakeFileCount = 2 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < fakeFileCount; i++) {
+      shuffled.splice(
+        Math.floor(Math.random() * shuffled.length),
+        0,
+        {
+          id: `fake-${i}`,
+          type: 'fake',
+          content: 'DATA CORRUPTED - UNABLE TO RETRIEVE FILE CONTENTS',
+          isFake: true
+        }
+      );
+    }
+
     return shuffled;
   }, [prosecutionEvidence, defenseArguments, informationGaps]);
 
-  const totalRealFiles = allFiles.filter(f => !f.isRedacted).length;
+  const totalRealFiles = allFiles.filter(f => !f.isRedacted && !f.isFake).length;
+  const totalClickableFiles = allFiles.filter(f => !f.isRedacted).length; // Real + Fake
   const revealedCount = revealedFiles.size;
 
   // Calculate corruption level for remaining files (percentage of info unlocked)
-  const currentCorruptionLevel = totalRealFiles > 0 ? (revealedCount / totalRealFiles) * 100 : 0;
+  const currentCorruptionLevel = totalRealFiles > 0 ? Math.min((revealedCount / totalRealFiles) * 100, 100) : 0;
 
   const handleFileClick = (file) => {
     if (file.isRedacted || revealedFiles.has(file.id)) {
@@ -69,10 +87,19 @@ export default function FileBrowser({ prosecutionEvidence, defenseArguments, inf
     }
 
     // Calculate corruption for this file
-    const unlockPercentage = ((revealedCount + 1) / totalRealFiles) * 100;
+    const unlockPercentage = Math.min(((revealedCount + 1) / totalRealFiles) * 100, 100);
     const randomOffset = (Math.random() * 10) - 5; // ±5%
     const displayCorruption = Math.max(0, Math.min(100, unlockPercentage + randomOffset));
-    const actualTextCorruption = Math.min((displayCorruption / 100) * 25, 25); // Max 25%
+
+    // Only apply actual text corruption to 1-2 files for style (not all files)
+    const shouldApplyTextCorruption = corruptedFileCount < 2 && Math.random() > 0.5;
+    const actualTextCorruption = shouldApplyTextCorruption
+      ? Math.min((displayCorruption / 100) * 12, 12) // Max 12%
+      : 0; // No text corruption
+
+    if (shouldApplyTextCorruption) {
+      setCorruptedFileCount(corruptedFileCount + 1);
+    }
 
     // Store corruption for this file
     setFileCorruption({
@@ -86,12 +113,13 @@ export default function FileBrowser({ prosecutionEvidence, defenseArguments, inf
     // Show modal
     setSelectedFile({
       ...file,
-      corruption: actualTextCorruption / 100, // Convert to 0-0.25 range
+      corruption: actualTextCorruption / 100, // Convert to 0-0.12 range for text corruption
+      displayCorruption: displayCorruption, // 0-100% for display
     });
   };
 
   const handleModalClose = () => {
-    if (selectedFile && !selectedFile.isRedacted) {
+    if (selectedFile && !selectedFile.isRedacted && !selectedFile.isFake) {
       // Mark as revealed
       const newRevealed = new Set(revealedFiles);
       newRevealed.add(selectedFile.id);
@@ -102,6 +130,7 @@ export default function FileBrowser({ prosecutionEvidence, defenseArguments, inf
         type: selectedFile.type,
         content: selectedFile.content,
         corruption: selectedFile.corruption,
+        displayCorruption: selectedFile.displayCorruption,
         index: selectedFile.index,
       });
     }
@@ -115,31 +144,30 @@ export default function FileBrowser({ prosecutionEvidence, defenseArguments, inf
         <span className="browser-icon">[FILES]</span>
         <span className="browser-title">CASE EVIDENCE DATABASE</span>
         <span className="browser-stats">
-          {revealedCount}/{totalRealFiles} ACCESSED | CORRUPTION: {Math.round(currentCorruptionLevel)}%
+          {revealedCount}/{totalClickableFiles} ACCESSED | CORRUPTION: {Math.round(currentCorruptionLevel)}%
         </span>
       </div>
 
       <div className="file-grid">
-        {allFiles.map((file) => {
-          const isRevealed = revealedFiles.has(file.id);
-          const fillLevel = isRevealed ? 100 : currentCorruptionLevel;
+        {allFiles
+          .filter(file => !revealedFiles.has(file.id)) // Hide revealed files
+          .map((file) => {
+            const fillLevel = currentCorruptionLevel;
 
-          return (
-            <button
-              key={file.id}
-              className={`file-button ${file.isRedacted ? 'file-redacted' : ''} ${
-                isRevealed ? 'file-revealed' : ''
-              }`}
-              onClick={() => handleFileClick(file)}
-              disabled={file.isRedacted || isRevealed}
-            >
-              <div className="file-fill" style={{ width: `${fillLevel}%` }} />
-              <div className="file-label">
-                {file.isRedacted ? '[REDACTED]' : isRevealed ? '[VIEWED]' : '[ DATA ]'}
-              </div>
-            </button>
-          );
-        })}
+            return (
+              <button
+                key={file.id}
+                className={`file-button ${file.isRedacted ? 'file-redacted' : ''}`}
+                onClick={() => handleFileClick(file)}
+                disabled={file.isRedacted}
+              >
+                <div className="file-fill" style={{ width: `${fillLevel}%` }} />
+                <div className="file-label">
+                  {file.isRedacted ? <FileX size={20} weight="duotone" /> : <FileText size={20} weight="duotone" />}
+                </div>
+              </button>
+            );
+          })}
       </div>
 
       {selectedFile && (
