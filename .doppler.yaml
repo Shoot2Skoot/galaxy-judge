@@ -1,0 +1,7 @@
+# Doppler configuration
+# Run 'doppler login' and complete authentication in browser first
+# Then run 'doppler setup' to configure the project
+
+setup:
+  project: galaxy-judge
+  config: dev
