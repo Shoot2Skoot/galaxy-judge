@@ -2,7 +2,7 @@ import { Bank } from '@phosphor-icons/react';
 
 export default function TerminalFrame({ children, year }) {
   return (
-    <div className="h-screen bg-black flex items-center justify-center p-4 relative overflow-hidden font-mono select-none">
+    <div className="h-screen [height:100dvh] bg-black flex items-center justify-center p-4 relative overflow-hidden font-mono select-none">
       {/* Background Ambience */}
       <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(circle_at_center,_transparent_0%,_black_100%)]"></div>
 

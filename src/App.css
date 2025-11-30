@@ -1,5 +1,6 @@
 .app {
-  min-height: 100vh;
+  min-height: 100vh; /* Fallback for older browsers */
+  min-height: 100dvh; /* Modern dynamic viewport height */
   display: flex;
   flex-direction: column;
 }
@@ -8,7 +9,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 100vh; /* Fallback for older browsers */
+  min-height: 100dvh; /* Modern dynamic viewport height */
   padding: var(--space-4);
 }
 
@@ -147,7 +149,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 100vh; /* Fallback for older browsers */
+  min-height: 100dvh; /* Modern dynamic viewport height */
   padding: var(--space-4);
 }
 

@@ -9,7 +9,7 @@
 }
 
 body {
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   background-color: #050505;
   color: #a3e6aa;
   -webkit-font-smoothing: antialiased;
@@ -17,7 +17,8 @@ body {
 }
 
 #root {
-  min-height: 100vh;
+  min-height: 100vh; /* Fallback for older browsers */
+  min-height: 100dvh; /* Modern dynamic viewport height */
 }
 
 /* CRT Scanline Effect */
@@ -26,7 +27,8 @@ body {
     transform: translateY(-100%);
   }
   100% {
-    transform: translateY(100vh);
+    transform: translateY(100vh); /* Fallback for older browsers */
+    transform: translateY(100dvh); /* Modern dynamic viewport height */
   }
 }
 
