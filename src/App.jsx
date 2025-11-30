@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import './App.css';
 import { useGameState } from './hooks/useGameState';
 import { hasStoredGame } from './utils/storage';
+import TerminalFrame from './components/TerminalFrame';
+import Panel from './components/Panel';
 import CaseDisplay from './components/CaseDisplay';
 import JudgmentInterface from './components/JudgmentInterface';
 import RetirementSummary from './components/RetirementSummary';
@@ -37,115 +38,109 @@ function App() {
       : 'NEW ASSIGNMENT';
 
     return (
-      <div className="app">
-        <div className="scanline-overlay" />
-        <div className="title-screen">
-          <div className="title-box">
-            <div className="title-header">
-              <div className="game-title">MAGISTRATE</div>
-              <div className="game-subtitle">STATION AUTHORITY TERMINAL v2.7.4</div>
+      <TerminalFrame year="--">
+        <Panel className="mt-8">
+          <div className="text-center mb-8 pt-4">
+            <div className="text-4xl md:text-6xl font-bold tracking-widest text-term-green mb-2">
+              MAGISTRATE
             </div>
-            <div className="title-content">
-              <p>
-                You are a Magistrate on a space station in a dystopian future. Resources are scarce.
-                Law is whatever you say it is.
-              </p>
-              <p>
-                Your job is to judge prisoners—one per year—with incomplete information and
-                irreversible consequences.
-              </p>
-              <p>You never have all the facts. You decide anyway.</p>
-              <p>You only learn how you did when you retire.</p>
-            </div>
-            <div className="title-actions">
-              <div className="title-status">{statusText}</div>
-              <button className="start-button" onClick={() => setHasStarted(true)}>
-                &gt;&gt;&gt; {buttonText}
-              </button>
-              {hasSavedGame && (
-                <button
-                  className="new-game-button-title"
-                  onClick={() => {
-                    newGame();
-                    setHasSavedGame(false);
-                  }}
-                >
-                  START NEW CAREER
-                </button>
-              )}
+            <div className="text-xs md:text-sm tracking-wider text-term-dim uppercase">
+              Station Authority Terminal v2.7.4
             </div>
           </div>
-        </div>
-      </div>
+
+          <div className="space-y-4 text-term-green/80 text-sm md:text-base leading-relaxed mb-8 px-4">
+            <p>
+              You are a Magistrate on a space station in a dystopian future. Resources are scarce.
+              Law is whatever you say it is.
+            </p>
+            <p>
+              Your job is to judge prisoners—one per year—with incomplete information and
+              irreversible consequences.
+            </p>
+            <p>You never have all the facts. You decide anyway.</p>
+            <p>You only learn how you did when you retire.</p>
+          </div>
+
+          <div className="space-y-4">
+            <div className="text-center text-xs tracking-widest text-term-dim uppercase border-t border-term-dim/30 pt-4">
+              {statusText}
+            </div>
+            <button
+              className="w-full py-3 bg-term-green/10 border-2 border-term-green text-term-green hover:bg-term-green/20 hover:shadow-[0_0_15px_rgba(163,230,170,0.3)] transition-all duration-200 text-sm md:text-base font-bold tracking-widest uppercase"
+              onClick={() => setHasStarted(true)}
+            >
+              &gt;&gt;&gt; {buttonText}
+            </button>
+            {hasSavedGame && (
+              <button
+                className="w-full py-2 bg-black/40 border border-term-dim text-term-dim hover:text-term-green/70 hover:border-term-green/50 transition-all duration-200 text-xs md:text-sm font-bold tracking-widest uppercase"
+                onClick={() => {
+                  newGame();
+                  setHasSavedGame(false);
+                }}
+              >
+                START NEW CAREER
+              </button>
+            )}
+          </div>
+        </Panel>
+      </TerminalFrame>
     );
   }
 
   // Error state
   if (error) {
     return (
-      <div className="app">
-        <div className="scanline-overlay" />
-        <div className="error-screen">
-          <div className="error-box">
-            <div className="error-header">SYSTEM ERROR</div>
-            <div className="error-content">
-              <p>{error}</p>
-              <p style={{ marginTop: '16px', fontSize: '11px', color: '#666' }}>
-                Check that your VITE_OPENAI_API_KEY is set in .env file.
-              </p>
+      <TerminalFrame year="--">
+        <Panel className="mt-8 border-red-500/40">
+          <div className="text-center py-8">
+            <div className="text-2xl md:text-4xl font-bold tracking-widest text-red-500 mb-4">
+              SYSTEM ERROR
+            </div>
+            <div className="text-term-green/70 mb-4">
+              {error}
+            </div>
+            <div className="text-xs text-term-dim">
+              Check that your VITE_OPENAI_API_KEY is set in .env file.
             </div>
           </div>
-        </div>
-      </div>
+        </Panel>
+      </TerminalFrame>
     );
   }
 
   // Retirement summary
   if (isRetired && retirementSummary) {
     return (
-      <div className="app">
-        <div className="scanline-overlay" />
-        <RetirementSummary
-          summary={retirementSummary}
-          onNewGame={() => {
-            newGame();
-            setHasStarted(false);
-          }}
-        />
-      </div>
+      <RetirementSummary
+        summary={retirementSummary}
+        onNewGame={() => {
+          newGame();
+          setHasStarted(false);
+        }}
+      />
     );
   }
 
-  // Loading state
+  // Loading state (including retirement summary generation)
   if (isLoading || !currentCase) {
-    return (
-      <div className="app">
-        <div className="scanline-overlay" />
-        <LoadingScreen message="LOADING CASE DATA" />
-      </div>
-    );
+    const message = isRetired ? "GENERATING CAREER SUMMARY" : "LOADING CASE DATA";
+    return <LoadingScreen message={message} />;
   }
 
   // Main game view
   return (
-    <div className="app">
-      <div className="scanline-overlay" />
-      <div className="game-container">
-        <div className="game-header">
-          <div className="game-header-title">MAGISTRATE</div>
-          <div className="game-header-subtitle">JUDICIAL TERMINAL - STATION AUTHORITY</div>
-        </div>
+    <TerminalFrame year={currentYear}>
+      <CaseDisplay caseData={currentCase} />
 
-        <CaseDisplay caseData={currentCase} year={currentYear} />
-
-        <JudgmentInterface
-          onVerdict={renderVerdict}
-          onRetire={retire}
-          year={currentYear}
-          casesJudged={pastCases.length}
-        />
-      </div>
-    </div>
+      <JudgmentInterface
+        onVerdict={renderVerdict}
+        onRetire={retire}
+        year={currentYear}
+        casesJudged={pastCases.length}
+      />
+    </TerminalFrame>
   );
 }
 

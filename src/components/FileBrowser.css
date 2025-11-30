@@ -5,6 +5,7 @@
 }
 
 .file-browser-header {
+  font-family: var(--font-alt);
   background: var(--color-bg-primary);
   padding: var(--space-1) var(--space-2);
   font-size: 11px;
@@ -14,18 +15,19 @@
   align-items: center;
   color: var(--color-text-secondary);
   border-bottom: var(--border-width) solid var(--color-border);
+  font-weight: 400;
 }
 
 .browser-icon {
   color: var(--color-accent-yellow);
-  font-weight: bold;
+  font-weight: 700;
   font-size: 13px;
 }
 
 .browser-title {
   flex: 1;
   color: var(--color-text-primary);
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .browser-stats {
@@ -112,7 +114,7 @@
   font-size: 8px;
   letter-spacing: 0.5px;
   color: var(--color-text-primary);
-  font-weight: bold;
+  font-weight: 700;
   text-align: center;
   padding: 3px;
   display: flex;

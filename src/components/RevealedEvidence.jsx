@@ -1,7 +1,11 @@
-import './RevealedEvidence.css';
+import Panel from './Panel';
 
 // Generate corrupted version of text
 function corruptText(text, intensity = 0.3) {
+  if (!text || typeof text !== 'string') {
+    return '';
+  }
+
   const corruptChars = ['█', '▓', '▒', '░', '╬', '╫', '╪', '┼', '┬', '┴', '├', '┤'];
   let corrupted = text;
   const numCorruptions = Math.floor(text.length * intensity);
@@ -15,42 +19,67 @@ function corruptText(text, intensity = 0.3) {
   return corrupted;
 }
 
-function EvidenceSection({ title, icon, files, color }) {
+// Ensure text ends with punctuation
+function ensurePunctuation(text) {
+  if (!text || typeof text !== 'string') {
+    return '';
+  }
+
+  const trimmed = text.trim();
+  if (trimmed.length === 0) {
+    return '';
+  }
+
+  const lastChar = trimmed[trimmed.length - 1];
+  const punctuation = ['.', '!', '?', ';', ':'];
+
+  if (punctuation.includes(lastChar)) {
+    return trimmed;
+  }
+  return trimmed + '.';
+}
+
+function EvidenceSection({ title, icon, files, iconColor }) {
   if (files.length === 0) return null;
 
+  // Combine all file contents into a single paragraph
+  const combinedContent = files.map((file) => {
+    // Ensure file and content exist
+    if (!file || !file.content) {
+      return '';
+    }
+
+    const content = file.corruption > 0
+      ? corruptText(file.content, file.corruption)
+      : file.content;
+    return ensurePunctuation(content);
+  }).filter(text => text.length > 0).join(' ');
+
+  // Calculate average corruption for display
+  const avgCorruption = files.reduce((sum, file) => sum + (file.displayCorruption || 0), 0) / files.length;
+  const corruptionPercent = Math.round(avgCorruption);
+
   return (
-    <div className="evidence-section">
-      <div className="evidence-header">
-        <span className="evidence-icon" style={{ color }}>{icon}</span>
-        <span className="evidence-title">{title}</span>
-        <span className="evidence-count">{files.length} ITEM{files.length !== 1 ? 'S' : ''}</span>
+    <Panel title={title} className="mb-4">
+      <div className="mt-4">
+        <div className="flex items-center justify-between mb-3 pb-2 border-b border-term-dim/30">
+          <div className="flex items-center gap-2">
+            <span className="text-lg" style={{ color: iconColor }}>{icon}</span>
+            <span className="text-xs uppercase tracking-wider text-term-dim">
+              {files.length} ITEM{files.length !== 1 ? 'S' : ''}
+            </span>
+          </div>
+          {corruptionPercent > 0 && (
+            <span className="text-xs text-term-dim">
+              AVG CORRUPT {corruptionPercent}%
+            </span>
+          )}
+        </div>
+        <div className="text-term-green/90 text-sm md:text-base leading-relaxed">
+          {combinedContent}
+        </div>
       </div>
-      <div className="evidence-items">
-        {files.map((file, idx) => {
-          const displayContent = file.corruption > 0
-            ? corruptText(file.content, file.corruption)
-            : file.content;
-
-          const corruptionPercent = Math.round(file.displayCorruption || 0);
-
-          return (
-            <div key={idx} className="evidence-item">
-              <div className="evidence-item-header">
-                <span className="evidence-item-number">#{idx + 1}</span>
-                {corruptionPercent > 0 && (
-                  <span className="evidence-item-corruption">
-                    CORRUPT {corruptionPercent}%
-                  </span>
-                )}
-              </div>
-              <div className="evidence-item-content">
-                {displayContent}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
+    </Panel>
   );
 }
 
@@ -60,34 +89,28 @@ export default function RevealedEvidence({ revealedFiles }) {
   const gapFiles = revealedFiles.filter(f => f.type === 'gaps');
 
   if (revealedFiles.length === 0) {
-    return (
-      <div className="revealed-evidence-empty">
-        <div className="empty-message">
-          [NO FILES ACCESSED] Click files above to reveal evidence
-        </div>
-      </div>
-    );
+    return null;
   }
 
   return (
-    <div className="revealed-evidence">
+    <div className="space-y-4">
       <EvidenceSection
         title="PROSECUTION EVIDENCE"
         icon="[⚖]"
         files={prosecutionFiles}
-        color="var(--color-accent-red)"
+        iconColor="#ff5555"
       />
       <EvidenceSection
         title="DEFENSE ARGUMENTS"
         icon="[⚔]"
         files={defenseFiles}
-        color="var(--color-accent-green)"
+        iconColor="#a3e6aa"
       />
       <EvidenceSection
         title="INFORMATION GAPS"
         icon="[?]"
         files={gapFiles}
-        color="var(--color-accent-yellow)"
+        iconColor="#ffaa00"
       />
     </div>
   );

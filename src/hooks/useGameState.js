@@ -43,7 +43,8 @@ export function useGameState() {
       hasLoadedInitialCase.current = true;
       loadInitialCases();
     }
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gameState.currentCase, gameState.isRetired, gameState.isLoading]);
 
   // Pre-load next case whenever current case is set and no next case exists
   useEffect(() => {
@@ -142,15 +143,31 @@ export function useGameState() {
     }
   }
 
-  function retire() {
-    const summary = generateRetirementSummary(gameState.pastCases);
-
+  async function retire() {
+    // Show loading state
     setGameState(prev => ({
       ...prev,
-      isRetired: true,
-      retirementSummary: summary,
-      currentCase: null,
+      isLoading: true,
     }));
+
+    try {
+      const summary = await generateRetirementSummary(gameState.pastCases);
+
+      setGameState(prev => ({
+        ...prev,
+        isRetired: true,
+        retirementSummary: summary,
+        currentCase: null,
+        isLoading: false,
+      }));
+    } catch (error) {
+      console.error('Error generating retirement summary:', error);
+      setGameState(prev => ({
+        ...prev,
+        error: 'Failed to generate retirement summary',
+        isLoading: false,
+      }));
+    }
   }
 
   function newGame() {

@@ -5,6 +5,7 @@
 }
 
 .judgment-header {
+  font-family: var(--font-alt);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -13,11 +14,12 @@
   padding: var(--space-3) var(--space-4);
   font-size: 12px;
   letter-spacing: 2px;
+  font-weight: 400;
 }
 
 .judgment-label {
   color: var(--color-accent-yellow);
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .judgment-stats {
@@ -66,13 +68,13 @@
 
 .verdict-icon {
   font-size: 26px;
-  font-weight: bold;
+  font-weight: 700;
   margin-bottom: var(--space-2);
 }
 
 .verdict-label {
   font-size: 15px;
-  font-weight: bold;
+  font-weight: 700;
   letter-spacing: 2px;
 }
 

@@ -27,24 +27,28 @@
 }
 
 .game-title {
-  font-size: 32px;
+  font-family: var(--font-display);
+  font-size: 36px;
   letter-spacing: 8px;
-  font-weight: bold;
+  font-weight: normal;
   color: var(--color-accent-yellow);
   margin-bottom: var(--space-3);
+  text-transform: uppercase;
 }
 
 .game-subtitle {
+  font-family: var(--font-alt);
   font-size: 11px;
   letter-spacing: 3px;
   color: var(--color-text-dim);
+  font-weight: 400;
 }
 
 .title-content {
   padding: var(--space-8) var(--space-6);
   line-height: 2;
   color: var(--color-text-secondary);
-  font-size: 13px;
+  font-size: 14px;
   background: var(--color-bg-primary);
 }
 
@@ -82,7 +86,7 @@
   font-size: 14px;
   letter-spacing: 3px;
   color: var(--color-accent-green);
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .start-button:hover {
@@ -122,16 +126,21 @@
 }
 
 .game-header-title {
-  font-size: 20px;
+  font-family: var(--font-display);
+  font-size: 22px;
   letter-spacing: 6px;
+  font-weight: normal;
   color: var(--color-accent-yellow);
   margin-bottom: var(--space-2);
+  text-transform: uppercase;
 }
 
 .game-header-subtitle {
+  font-family: var(--font-alt);
   font-size: 10px;
   letter-spacing: 2px;
   color: var(--color-text-dim);
+  font-weight: 400;
 }
 
 .error-screen {
@@ -149,13 +158,14 @@
 }
 
 .error-header {
+  font-family: var(--font-alt);
   background: var(--color-bg-tertiary);
   border-bottom: var(--border-width) solid var(--color-accent-red);
   padding: var(--space-3) var(--space-4);
   font-size: 11px;
   letter-spacing: 2px;
   color: var(--color-accent-red);
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .error-content {

@@ -5,6 +5,7 @@
 }
 
 .case-header {
+  font-family: var(--font-alt);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -13,6 +14,7 @@
   padding: var(--space-2) var(--space-3);
   font-size: 12px;
   letter-spacing: 2px;
+  font-weight: 400;
 }
 
 .case-header-left {
@@ -23,7 +25,7 @@
 
 .case-year {
   color: var(--color-accent-yellow);
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .case-separator {
@@ -32,7 +34,7 @@
 
 .case-header-right {
   color: var(--color-accent-red);
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .prisoner-info-grid {
@@ -55,6 +57,7 @@
 }
 
 .section-header {
+  font-family: var(--font-alt);
   background: var(--color-bg-primary);
   padding: var(--space-1) var(--space-2);
   font-size: 11px;
@@ -63,11 +66,12 @@
   gap: var(--space-2);
   align-items: center;
   color: var(--color-text-secondary);
+  font-weight: 400;
 }
 
 .section-indicator {
   color: var(--color-accent-yellow);
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .section-content {
@@ -78,7 +82,7 @@
 
 .crime-content {
   color: var(--color-accent-red);
-  font-weight: bold;
+  font-weight: 700;
   font-size: 16px;
 }
 
@@ -92,10 +96,11 @@
 }
 
 .severity-label {
+  font-family: var(--font-alt);
   font-size: 10px;
   letter-spacing: 2px;
   color: var(--color-accent-yellow);
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .severity-content {

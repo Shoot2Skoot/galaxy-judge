@@ -24,6 +24,7 @@
 }
 
 .evidence-header {
+  font-family: var(--font-alt);
   background: var(--color-bg-primary);
   padding: var(--space-1) var(--space-2);
   border-bottom: var(--border-width) solid var(--color-border);
@@ -32,17 +33,18 @@
   align-items: center;
   font-size: 11px;
   letter-spacing: 2px;
+  font-weight: 400;
 }
 
 .evidence-icon {
-  font-weight: bold;
+  font-weight: 700;
   font-size: 13px;
 }
 
 .evidence-title {
   flex: 1;
   color: var(--color-text-primary);
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .evidence-count {
@@ -80,12 +82,12 @@
 
 .evidence-item-number {
   color: var(--color-text-secondary);
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .evidence-item-corruption {
   color: var(--color-accent-yellow);
-  font-weight: bold;
+  font-weight: 700;
   font-size: 9px;
 }
 
@@ -96,6 +98,13 @@
   color: var(--color-text-primary);
   font-family: var(--font-mono);
   flex: 1;
+}
+
+.evidence-item-content.combined-paragraph {
+  padding: var(--space-3);
+  line-height: 1.9;
+  font-size: 14px;
+  text-align: left;
 }
 
 /* Mobile Responsive */
