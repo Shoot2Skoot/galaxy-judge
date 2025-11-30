@@ -390,7 +390,7 @@ CRITICAL: Return ONLY valid JSON in the exact format specified above. The "narra
       Authorization: `Bearer ${API_KEY}`,
     },
     body: JSON.stringify({
-      model: "gpt-5-mini-2025-02-05", // Use gpt-5-mini for better narrative quality
+      model: "gpt-5-mini-2025-08-07", // Use gpt-5-mini for better narrative quality
       input: systemPrompt,
       reasoning: {
         effort: "minimal",
