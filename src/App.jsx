@@ -49,7 +49,7 @@ function App() {
             </div>
           </div>
 
-          <div className="space-y-4 text-term-green/80 text-sm md:text-base leading-relaxed mb-6 sm:mb-8 px-1 sm:px-4">
+          <div className="space-y-4 text-term-green/80 text-sm md:text-base leading-relaxed mb-6 sm:mb-8 px-1 sm:px-2">
             <p>
               You are a Magistrate on a space station in a dystopian future. Resources are scarce.
               Law is whatever you say it is.
