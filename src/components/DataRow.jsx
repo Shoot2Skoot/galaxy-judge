@@ -1,7 +1,7 @@
 export default function DataRow({ label, mobileLabel, value }) {
   return (
     <div className="flex border-b border-term-dim/30 last:border-0 h-10 group">
-      <div className="w-[20%] sm:w-1/3 bg-term-dim/10 flex items-center px-2 sm:px-4 text-term-dim font-bold text-sm uppercase tracking-wide border-r border-term-dim/30">
+      <div className="w-[25%] sm:w-[35%] bg-term-dim/10 flex items-center px-2 sm:px-4 text-term-dim font-bold text-sm uppercase tracking-wide border-r border-term-dim/30">
         {mobileLabel ? (
           <>
             <span className="sm:hidden">{mobileLabel}:</span>
@@ -11,8 +11,10 @@ export default function DataRow({ label, mobileLabel, value }) {
           <span>{label}:</span>
         )}
       </div>
-      <div className="w-[80%] sm:w-2/3 flex items-center px-2 sm:px-4 text-term-green text-lg tracking-wider relative">
-        {value}
+      <div className="w-[75%] sm:w-[65%] flex items-center px-2 sm:px-4 text-term-green text-lg tracking-wider relative overflow-x-auto scrollable-value">
+        <div className="whitespace-nowrap">
+          {value}
+        </div>
 
         {/* Decorative Data Readout Graphic - Hidden on mobile */}
         <div className="hidden sm:flex absolute right-2 top-1/2 -translate-y-1/2 w-32 h-2 gap-0.5 opacity-50 group-hover:opacity-100 transition-opacity">

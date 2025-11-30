@@ -39,7 +39,7 @@ function ensurePunctuation(text) {
   return trimmed + '.';
 }
 
-function EvidenceSection({ title, icon, files, iconColor }) {
+function EvidenceSection({ title, icon, files, iconColor, textColor, borderColor }) {
   if (files.length === 0) return null;
 
   // Combine all file contents into a single paragraph
@@ -60,22 +60,22 @@ function EvidenceSection({ title, icon, files, iconColor }) {
   const corruptionPercent = Math.round(avgCorruption);
 
   return (
-    <Panel title={title} className="mb-4">
+    <Panel title={title} className="mb-4" accentColor={borderColor}>
       <div className="mt-4">
-        <div className="flex items-center justify-between mb-3 pb-2 border-b border-term-dim/30">
+        <div className="flex items-center justify-between mb-3 pb-2 border-b" style={{ borderColor: borderColor + '50' }}>
           <div className="flex items-center gap-2">
-            <span className="text-lg" style={{ color: iconColor }}>{icon}</span>
-            <span className="text-xs uppercase tracking-wider text-term-dim">
+            <span className="text-lg font-bold" style={{ color: iconColor }}>{icon}</span>
+            <span className="text-xs uppercase tracking-wider" style={{ color: iconColor + 'bb' }}>
               {files.length} ITEM{files.length !== 1 ? 'S' : ''}
             </span>
           </div>
           {corruptionPercent > 0 && (
-            <span className="text-xs text-term-dim">
+            <span className="text-xs" style={{ color: iconColor + '88' }}>
               AVG CORRUPT {corruptionPercent}%
             </span>
           )}
         </div>
-        <div className="text-term-green/90 text-sm md:text-base leading-relaxed">
+        <div className="text-sm md:text-base leading-relaxed" style={{ color: textColor }}>
           {combinedContent}
         </div>
       </div>
@@ -99,18 +99,24 @@ export default function RevealedEvidence({ revealedFiles }) {
         icon="[⚖]"
         files={prosecutionFiles}
         iconColor="#ff5555"
+        textColor="#ffaaaa"
+        borderColor="#ff5555"
       />
       <EvidenceSection
         title="DEFENSE ARGUMENTS"
         icon="[⚔]"
         files={defenseFiles}
         iconColor="#a3e6aa"
+        textColor="#a3e6aa"
+        borderColor="#a3e6aa"
       />
       <EvidenceSection
         title="INFORMATION GAPS"
         icon="[?]"
         files={gapFiles}
         iconColor="#ffaa00"
+        textColor="#ffcc66"
+        borderColor="#ffaa00"
       />
     </div>
   );

@@ -2,12 +2,50 @@ import TerminalFrame from './TerminalFrame';
 import Panel from './Panel';
 import DataRow from './DataRow';
 
-export default function RetirementSummary({ summary, onNewGame }) {
+export default function RetirementSummary({ summary, outcome, onNewGame }) {
   const { stats, narrative } = summary;
+
+  const getOutcomeMessage = () => {
+    if (!outcome || outcome === 'retired') return null;
+
+    if (outcome === 'died') {
+      return {
+        title: 'DIED IN SERVICE',
+        message: 'Your service ended abruptly. Station records indicate you did not survive your tenure as Magistrate.',
+        color: 'text-red-500'
+      };
+    }
+
+    if (outcome === 'ousted') {
+      return {
+        title: 'REMOVED FROM OFFICE',
+        message: 'Station Command determined your service was no longer required. You were relieved of your duties as Magistrate.',
+        color: 'text-orange-500'
+      };
+    }
+
+    return null;
+  };
+
+  const outcomeInfo = getOutcomeMessage();
 
   return (
     <TerminalFrame year={stats.yearsServed}>
-      <Panel title="SERVICE CONCLUDED" className="mt-8">
+      <Panel title="SERVICE CONCLUDED" className="w-full flex-1 min-h-0 overflow-auto">
+        {/* Forced Outcome Message */}
+        {outcomeInfo && (
+          <div className="mt-6 mb-4 px-4">
+            <div className={`border-2 ${outcomeInfo.color.replace('text-', 'border-')} p-4 ${outcomeInfo.color.replace('text-', 'bg-')}/10`}>
+              <div className={`${outcomeInfo.color} text-lg md:text-xl font-bold uppercase tracking-widest mb-2`}>
+                {outcomeInfo.title}
+              </div>
+              <div className="text-term-green/80 text-sm md:text-base">
+                {outcomeInfo.message}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Career Narrative */}
         <div className="mt-6 mb-8 px-4">
           <div className="text-term-green/90 text-sm md:text-base leading-relaxed whitespace-pre-wrap">

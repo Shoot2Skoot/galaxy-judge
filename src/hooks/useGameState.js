@@ -24,6 +24,8 @@ export function useGameState() {
       retirementSummary: null,
       isLoading: false,
       error: null,
+      endYear: Math.floor(Math.random() * (55 - 15 + 1)) + 15, // Random 15-55
+      forcedOutcome: null, // 'retired', 'died', or 'ousted'
     };
   });
 
@@ -101,10 +103,35 @@ export function useGameState() {
       wasGuilty: Math.random() > 0.5, // Placeholder
     };
 
+    const newPastCases = [...gameState.pastCases, caseWithVerdict];
+    const nextYear = gameState.currentYear + 1;
+
+    // Check if player has reached their end year
+    if (nextYear >= gameState.endYear) {
+      // Force retirement with random outcome
+      const outcomes = ['retired', 'died', 'ousted'];
+      const forcedOutcome = outcomes[Math.floor(Math.random() * outcomes.length)];
+
+      // Show loading screen with artificial delay for pacing
+      setGameState(prev => ({
+        ...prev,
+        pastCases: newPastCases,
+        currentCase: null,
+        isLoading: true,
+      }));
+
+      // Wait for delay, then trigger forced retirement
+      setTimeout(() => {
+        forceRetirement(forcedOutcome);
+      }, CASE_TRANSITION_DELAY);
+
+      return;
+    }
+
     // Show loading screen with artificial delay for pacing
     setGameState(prev => ({
       ...prev,
-      pastCases: [...prev.pastCases, caseWithVerdict],
+      pastCases: newPastCases,
       currentCase: null,
       isLoading: true,
     }));
@@ -115,7 +142,7 @@ export function useGameState() {
         ...prev,
         currentCase: prev.nextCase, // Use pre-loaded case
         nextCase: null, // Clear it so a new one gets loaded
-        currentYear: prev.currentYear + 1,
+        currentYear: nextYear,
         isLoading: !prev.nextCase, // Continue loading only if no pre-loaded case
       }));
 
@@ -144,20 +171,59 @@ export function useGameState() {
   }
 
   async function retire() {
-    // Show loading state
+    console.log('Retire function called');
+    console.log('Past cases:', gameState.pastCases);
+
+    // Show loading state and set retired flag
     setGameState(prev => ({
       ...prev,
+      isRetired: true,
       isLoading: true,
+      currentCase: null,
+      forcedOutcome: 'retired', // Voluntary retirement
     }));
 
     try {
-      const summary = await generateRetirementSummary(gameState.pastCases);
+      console.log('Calling generateRetirementSummary...');
+      const summary = await generateRetirementSummary(gameState.pastCases, 'retired');
+      console.log('Summary received:', summary);
 
       setGameState(prev => ({
         ...prev,
-        isRetired: true,
         retirementSummary: summary,
-        currentCase: null,
+        isLoading: false,
+      }));
+    } catch (error) {
+      console.error('Error generating retirement summary:', error);
+      setGameState(prev => ({
+        ...prev,
+        error: 'Failed to generate retirement summary',
+        isLoading: false,
+      }));
+    }
+  }
+
+  async function forceRetirement(outcome) {
+    console.log('Force retirement:', outcome);
+    console.log('Past cases:', gameState.pastCases);
+
+    // Show loading state and set retired flag
+    setGameState(prev => ({
+      ...prev,
+      isRetired: true,
+      isLoading: true,
+      currentCase: null,
+      forcedOutcome: outcome,
+    }));
+
+    try {
+      console.log('Calling generateRetirementSummary with outcome:', outcome);
+      const summary = await generateRetirementSummary(gameState.pastCases, outcome);
+      console.log('Summary received:', summary);
+
+      setGameState(prev => ({
+        ...prev,
+        retirementSummary: summary,
         isLoading: false,
       }));
     } catch (error) {
@@ -183,6 +249,8 @@ export function useGameState() {
       retirementSummary: null,
       isLoading: false,
       error: null,
+      endYear: Math.floor(Math.random() * (55 - 15 + 1)) + 15, // Random 15-55
+      forcedOutcome: null,
     });
   }
 

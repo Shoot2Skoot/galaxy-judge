@@ -44,12 +44,14 @@ IMPACT WITHOUT MELODRAMA:
 Generate a case with:
 - Name: Choose from [${selectedFirstNames.join(", ")}] and [${selectedLastNames.join(", ")}]
 - Age: 18-70
+- Gender: Infer from the first name (male/female/non-binary)
 - Role: Choose from [${selectedRoles.join(", ")}]
 - Crime: (3-8 words) Category: [${selectedCrimes.join(" or ")}]. Be specific and clear.
 - Severity: (8-15 words) Explain the practical impact on the station. What breaks if you get this wrong?
 - Prosecution: 2-3 pieces of evidence (5-15 words each). Concrete facts that suggest guilt.
 - Defense: 2-3 arguments (5-15 words each). Concrete facts that suggest innocence or mitigation.
 - Missing Info: 1-2 gaps (5-15 words each). What key information is unavailable?
+- Statement: (OPTIONAL, 10-30 words) A brief statement from the accused - a plea, justification, explanation, or anything they might say if given the opportunity before verdict. This can be left out entirely if it doesn't fit the case or character.
 
 The case should have legitimate arguments on both sides. Make the player genuinely uncertain.
 
@@ -57,12 +59,14 @@ Return ONLY valid JSON:
 {
   "prisonerName": "string",
   "age": number,
+  "gender": "string",
   "role": "string",
   "crime": "string",
   "crimeSeverity": "string",
   "prosecutionEvidence": ["string", "string", ...],
   "defenseArgument": ["string", "string", ...],
-  "informationGaps": ["string", "string", ...]
+  "informationGaps": ["string", "string", ...],
+  "accusedStatement": "string or null"
 }`;
 
   try {
@@ -125,6 +129,7 @@ function generateFallbackCase(yearNumber) {
     {
       prisonerName: "Amos Vex",
       age: 42,
+      gender: "male",
       role: "Hydroponics Technician",
       crime: "Theft of medical supplies",
       crimeSeverity:
@@ -143,10 +148,12 @@ function generateFallbackCase(yearNumber) {
         "Camera footage for the corridor is corrupted during the relevant time window.",
         "The Medical Bay supervisor is on leave and unavailable for questioning.",
       ],
+      accusedStatement: "I was fixing the ventilation. I swear I didn't touch anything else. My daughter needed help.",
     },
     {
       prisonerName: "Kira Chen",
       age: 28,
+      gender: "female",
       role: "Communications Officer",
       crime: "Seditious speech and mutiny-adjacent activity",
       crimeSeverity:
@@ -165,6 +172,7 @@ function generateFallbackCase(yearNumber) {
         "No audio recording exists of the conversation in question.",
         "Chen's personal logs are protected by privacy protocol and unavailable for review.",
       ],
+      accusedStatement: "I've served this station for six years. I would never betray it. They misunderstood what I said.",
     },
   ];
 
@@ -180,7 +188,7 @@ function generateFallbackCase(yearNumber) {
   };
 }
 
-export async function generateRetirementSummary(cases) {
+export async function generateRetirementSummary(cases, outcome = null) {
   const completedCases = cases.filter((c) => c.verdict !== null);
 
   const stats = {
@@ -195,15 +203,14 @@ export async function generateRetirementSummary(cases) {
   if (completedCases.length === 0) {
     return {
       stats,
-      vignettes: [],
-      epitaph:
+      narrative:
         "You retired before judging a single case. History will not remember you.",
     };
   }
 
   // Generate AI narrative (single flowing story)
   try {
-    const narrative = await generateCareerNarrative(completedCases, stats);
+    const narrative = await generateCareerNarrative(completedCases, stats, outcome);
 
     return {
       stats,
@@ -219,10 +226,15 @@ export async function generateRetirementSummary(cases) {
   }
 }
 
-async function generateCareerNarrative(cases, stats) {
+async function generateCareerNarrative(cases, stats, outcome = null) {
   if (!API_KEY) {
     throw new Error("VITE_OPENAI_API_KEY is not set");
   }
+
+  // Calculate dynamic word count: 15 * years ± 50, min 50, max 450
+  const baseWords = stats.yearsServed * 15;
+  const minWords = Math.max(50, baseWords - 50);
+  const maxWords = Math.min(450, baseWords + 50);
 
   // Build case summaries for the AI
   const caseSummaries = cases
@@ -234,17 +246,26 @@ async function generateCareerNarrative(cases, stats) {
     )
     .join("\n");
 
-  const systemPrompt = `You are writing a career retrospective for a retired Magistrate. This should read like an obituary or a personal reflection - one flowing narrative, not separate sections.
+  const outcomeText = outcome
+    ? `\n\nCAREER ENDING: The magistrate ${outcome === 'retired' ? 'retired voluntarily' : outcome === 'died' ? 'died in service' : 'was ousted from their position'}. Reflect this in the narrative appropriately.`
+    : '';
+
+  const systemPrompt = `You are writing a career retrospective for a retired Magistrate. This should read like an obituary or a personal reflection - one flowing narrative, not separate sections.${outcomeText}
 
 MAGISTRATE'S CAREER:
 - Served ${stats.yearsServed} years
 - Judged ${stats.totalCases} cases
 - Released: ${stats.released}, Detained: ${stats.detained}, Executed: ${stats.airlocked}
 
+VERDICT MEANINGS (CRITICAL - UNDERSTAND THESE):
+- RELEASE: Returned to station population, free to live and work
+- DETAIN: Imprisoned (cryo-sleep, isolation, or labor camp) - alive but confined
+- AIRLOCK: EXECUTION. Thrown out the airlock into space. DEATH. The person is KILLED.
+
 CASES YOU JUDGED:
 ${caseSummaries}
 
-Write a 200-350 word narrative that:
+Write a ${minWords}-${maxWords} word narrative that:
 
 STRUCTURE:
 - Opens with how they're remembered (their legacy/reputation)
@@ -262,6 +283,7 @@ NUANCED TRUTH:
 - Don't say "guilty" or "innocent" explicitly
 - Use: "turned out", "later showed", "it emerged that", "records indicated"
 - Focus on consequences and irony, not moral judgments
+- For AIRLOCK verdicts: Make it clear the person DIED. Use phrases like "sent to their death", "never breathed station air again", "the last face they saw", "died in the airlock", "executed for", etc.
 - Let outcomes speak for themselves
 
 AVOID:
@@ -269,9 +291,10 @@ AVOID:
 - Melodrama or emotional manipulation
 - Clear guilty/innocent labels
 - Saying "vignette" or "case #"
+- Euphemizing death for AIRLOCK verdicts - be direct that they were killed
 
 EXAMPLE TONE:
-"They served fifteen years. Some said lenient, others harsh - the record shows both. There was the water technician accused of hoarding. Released. She died in an accident two years later, but the forty liters in her quarters kept her neighbors alive during the lockdown. Then the young engineer charged with sabotage. Detained for six years. The malfunction he'd been blamed for happened twice more after. Still, he never returned to engineering work..."
+"They served fifteen years. Some said lenient, others harsh - the record shows both. There was the water technician accused of hoarding. Released. She died in an accident two years later, but the forty liters in her quarters kept her neighbors alive during the lockdown. Then the young engineer charged with sabotage. Detained for six years. The malfunction he'd been blamed for happened twice more after. Still, he never returned to engineering work. And the supply officer sent to the airlock for distribution fraud - executed at thirty-two. The thefts continued after her death, same patterns, different hands."
 
 Write as flowing prose. Weave statistics and stories together naturally.
 
@@ -287,8 +310,9 @@ Return ONLY the narrative text, no JSON, no formatting, no section headers.`;
       model: MODEL,
       input: systemPrompt,
       reasoning: {
-        effort: "high",
+        effort: "minimal",
       },
+      verbosity: "low",
     }),
   });
 

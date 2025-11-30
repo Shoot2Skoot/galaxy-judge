@@ -4,7 +4,6 @@ import { hasStoredGame } from './utils/storage';
 import TerminalFrame from './components/TerminalFrame';
 import Panel from './components/Panel';
 import CaseDisplay from './components/CaseDisplay';
-import JudgmentInterface from './components/JudgmentInterface';
 import RetirementSummary from './components/RetirementSummary';
 import LoadingScreen from './components/LoadingScreen';
 
@@ -18,6 +17,7 @@ function App() {
     pastCases,
     isRetired,
     retirementSummary,
+    forcedOutcome,
     isLoading,
     error,
     renderVerdict,
@@ -115,6 +115,7 @@ function App() {
     return (
       <RetirementSummary
         summary={retirementSummary}
+        outcome={forcedOutcome}
         onNewGame={() => {
           newGame();
           setHasStarted(false);
@@ -132,13 +133,12 @@ function App() {
   // Main game view
   return (
     <TerminalFrame year={currentYear}>
-      <CaseDisplay caseData={currentCase} />
-
-      <JudgmentInterface
+      <CaseDisplay
+        caseData={currentCase}
         onVerdict={renderVerdict}
         onRetire={retire}
-        year={currentYear}
         casesJudged={pastCases.length}
+        year={currentYear}
       />
     </TerminalFrame>
   );

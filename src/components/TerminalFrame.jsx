@@ -1,11 +1,13 @@
+import { Bank } from '@phosphor-icons/react';
+
 export default function TerminalFrame({ children, year }) {
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-4 relative overflow-hidden font-mono select-none">
+    <div className="h-screen bg-black flex items-center justify-center p-4 relative overflow-hidden font-mono select-none">
       {/* Background Ambience */}
       <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(circle_at_center,_transparent_0%,_black_100%)]"></div>
 
       {/* Main Container */}
-      <div className="relative w-full max-w-6xl bg-term-dark border border-term-dim shadow-[0_0_20px_rgba(0,0,0,0.8)] flex flex-col z-10">
+      <div className="relative w-full max-w-6xl bg-term-dark border border-term-dim shadow-[0_0_20px_rgba(0,0,0,0.8)] flex flex-col h-full z-10">
 
         {/* Exterior Industrial Decorative Elements */}
         <div className="absolute -left-3 top-20 bottom-20 w-1 bg-term-dim/30 rounded-full hidden md:block"></div>
@@ -17,7 +19,10 @@ export default function TerminalFrame({ children, year }) {
           <div className="hidden sm:flex justify-between items-center">
             <span>Magistrate</span>
             <span className="text-term-dim">|</span>
-            <span>Judicial Terminal - Station Authority</span>
+            <span className="flex items-center gap-2">
+              Judicial Terminal - Station Authority
+              <Bank size={16} weight="duotone" />
+            </span>
             <span className="text-term-dim">|</span>
             <span>Year {year}</span>
           </div>
@@ -28,15 +33,18 @@ export default function TerminalFrame({ children, year }) {
               <span>Magistrate</span>
               <span>Year {year}</span>
             </div>
-            <div className="flex flex-col text-right leading-tight">
-              <span>Judicial Terminal</span>
-              <span>Station Authority</span>
+            <div className="flex items-center gap-1.5">
+              <div className="flex flex-col text-right leading-tight gap-1">
+                <span>Judicial Terminal</span>
+                <span>Station Authority</span>
+              </div>
+              <Bank size={32} weight="duotone" className="flex-shrink-0" />
             </div>
           </div>
         </div>
 
         {/* Content Area */}
-        <div className="p-4 md:p-8 relative">
+        <div className="p-4 md:p-8 relative flex-1 flex flex-col">
           {children}
         </div>
 

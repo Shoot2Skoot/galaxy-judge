@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from 'react';
-import { FileText, FileX } from 'phosphor-react';
+import { FileText, FileX } from '@phosphor-icons/react';
 import Panel from './Panel';
 import FileModal from './FileModal';
 import { gameConfig } from '../config/gameConfig';
