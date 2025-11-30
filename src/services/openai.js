@@ -210,11 +210,27 @@ export async function generateRetirementSummary(cases, outcome = null) {
 
   // Generate AI narrative (single flowing story)
   try {
-    const narrative = await generateCareerNarrative(completedCases, stats, outcome);
+    const result = await generateCareerNarrative(completedCases, stats, outcome);
+
+    // Update cases with guilt determinations
+    const casesWithOutcomes = completedCases.map((c, index) => ({
+      ...c,
+      wasGuilty: result.caseOutcomes[index]?.guilty ?? null
+    }));
+
+    // Calculate judgment accuracy stats
+    const innocentsDetained = casesWithOutcomes.filter(c => !c.wasGuilty && c.verdict === 'detain').length;
+    const innocentsKilled = casesWithOutcomes.filter(c => !c.wasGuilty && c.verdict === 'airlock').length;
+    const guiltiesReleased = casesWithOutcomes.filter(c => c.wasGuilty && c.verdict === 'release').length;
 
     return {
-      stats,
-      narrative,
+      stats: {
+        ...stats,
+        innocentsDetained,
+        innocentsKilled,
+        guiltiesReleased
+      },
+      narrative: result.narrative,
     };
   } catch (error) {
     console.error("Error generating retirement narrative:", error);
@@ -265,6 +281,50 @@ VERDICT MEANINGS (CRITICAL - UNDERSTAND THESE):
 CASES YOU JUDGED:
 ${caseSummaries}
 
+IMPORTANT - DETERMINE GUILT:
+For each case, you must decide whether the person was actually guilty or innocent based on the evidence. Use this to create irony and tension in the narrative. Consider:
+- Did the evidence truly prove guilt?
+- Were there mitigating circumstances?
+- Did later events reveal the truth?
+- Some verdicts may have been correct, others tragically wrong
+
+RETURN FORMAT - YOU MUST RETURN VALID JSON:
+{
+  "narrative": "your ${minWords}-${maxWords} word narrative here WITH MARKDOWN FORMATTING",
+  "caseOutcomes": [
+    {"guilty": true},  // or false for innocent
+    {"guilty": false},
+    ...one entry for each case in order
+  ]
+}
+
+FORMATTING RULES (CRITICAL - READ CAREFULLY):
+You MUST use markdown formatting to make the narrative more impactful and readable. Use these formats ONLY:
+
+1. **Bold text** - Use for emphasis on KEY MOMENTS, critical decisions, or striking ironies
+   - Syntax: **text here**
+   - Example: "**The water technician was released.** She died two years later."
+
+2. *Italic text* - Use for reflections, subtle emphasis, or internal thoughts
+   - Syntax: *text here*
+   - Example: "Some said lenient, others harsh—*the record shows both.*"
+
+3. Block quotes - Use for official records, testimonies, or particularly impactful statements
+   - Syntax: > Quote text here (on its own line)
+   - Example:
+   > The maintenance logs confirmed a work order for that area, though the timestamp was illegible.
+
+4. Line breaks - Use double line breaks to create dramatic pacing between sections
+   - Just use blank lines in your narrative for natural paragraph breaks
+
+FORMATTING GUIDELINES:
+- Use bold sparingly (2-4 times per narrative) for maximum impact
+- Use italics more liberally for tone and reflection
+- Use 1-2 quote blocks maximum for particularly significant statements
+- Break your narrative into 3-5 paragraphs with blank lines between them
+- DO NOT use headings, lists, code blocks, or links - ONLY bold, italics, and block quotes
+- Keep formatting natural and purposeful, not excessive
+
 Write a ${minWords}-${maxWords} word narrative that:
 
 STRUCTURE:
@@ -298,7 +358,7 @@ EXAMPLE TONE:
 
 Write as flowing prose. Weave statistics and stories together naturally.
 
-Return ONLY the narrative text, no JSON, no formatting, no section headers.`;
+CRITICAL: Return ONLY valid JSON in the exact format specified above. No markdown formatting, no extra text.`;
 
   const response = await fetch(API_ENDPOINT, {
     method: "POST",
@@ -329,5 +389,13 @@ Return ONLY the narrative text, no JSON, no formatting, no section headers.`;
   }
 
   const contentItem = messageItem.content[0];
-  return contentItem.text || contentItem.content || "";
+  const responseText = contentItem.text || contentItem.content || "";
+
+  // Parse the JSON response
+  const parsed = JSON.parse(responseText);
+
+  return {
+    narrative: parsed.narrative,
+    caseOutcomes: parsed.caseOutcomes || []
+  };
 }

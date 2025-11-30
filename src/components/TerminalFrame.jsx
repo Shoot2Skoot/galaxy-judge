@@ -7,7 +7,7 @@ export default function TerminalFrame({ children, year }) {
       <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(circle_at_center,_transparent_0%,_black_100%)]"></div>
 
       {/* Main Container */}
-      <div className="relative w-full max-w-6xl bg-term-dark border border-term-dim shadow-[0_0_20px_rgba(0,0,0,0.8)] flex flex-col h-full z-10">
+      <div className="relative w-full max-w-6xl bg-term-dark border border-term-dim shadow-[0_0_20px_rgba(0,0,0,0.8)] flex flex-col h-full min-h-0 z-10">
 
         {/* Exterior Industrial Decorative Elements */}
         <div className="absolute -left-3 top-20 bottom-20 w-1 bg-term-dim/30 rounded-full hidden md:block"></div>
@@ -44,7 +44,7 @@ export default function TerminalFrame({ children, year }) {
         </div>
 
         {/* Content Area */}
-        <div className="p-4 md:p-8 relative flex-1 flex flex-col">
+        <div className="p-4 md:p-8 relative flex-1 min-h-0 flex flex-col">
           {children}
         </div>
 
