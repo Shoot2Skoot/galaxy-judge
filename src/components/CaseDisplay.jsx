@@ -128,7 +128,7 @@ export default function CaseDisplay({ caseData, onVerdict, onRetire, casesJudged
 
         {/* Tab Content */}
         <Panel
-          className="w-full border-t-0 flex-1 min-h-0 overflow-auto"
+          className="w-full border-t-0 flex-1 min-h-0"
           title={
             activeTab === 'charges' ? 'Charges' :
             activeTab === 'prosecution' ? 'Prosecution' :
@@ -138,6 +138,7 @@ export default function CaseDisplay({ caseData, onVerdict, onRetire, casesJudged
           }
           showTopLeft={activeTab === 'charges'}
           showTopRight={activeTab === 'verdict'}
+          allowOverflow={true}
         >
           {activeTab === 'charges' && (
             <div className="space-y-4">
