@@ -185,7 +185,7 @@
   }
 
   .title-content {
-    padding: var(--space-4);
+    padding: var(--space-3);
     font-size: 12px;
     line-height: 1.8;
   }
@@ -222,6 +222,10 @@
   .game-subtitle {
     font-size: 9px;
     letter-spacing: 2px;
+  }
+
+  .title-content {
+    padding: var(--space-2);
   }
 
   .title-content p {
