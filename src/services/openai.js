@@ -52,8 +52,15 @@ Generate a case with:
 - Defense: 2-3 arguments (5-15 words each). Concrete facts that suggest innocence or mitigation.
 - Missing Info: 1-2 gaps (5-15 words each). What key information is unavailable?
 - Statement: (OPTIONAL, 10-30 words) A brief statement from the accused - a plea, justification, explanation, or anything they might say if given the opportunity before verdict. This can be left out entirely if it doesn't fit the case or character.
+- wasGuilty: CRITICAL - Determine if they actually committed the crime. Aim for roughly 50/50 distribution over many cases (some guilty, some innocent). This creates moral complexity.
 
 The case should have legitimate arguments on both sides. Make the player genuinely uncertain.
+
+IMPORTANT - GUILT DISTRIBUTION:
+- wasGuilty should be TRUE roughly 50% of the time (they did commit the crime)
+- wasGuilty should be FALSE roughly 50% of the time (they were framed, misunderstood, or innocent)
+- The evidence should be ambiguous enough that the player can't easily tell
+- Create REAL moral dilemmas where wrong verdicts have serious consequences
 
 Return ONLY valid JSON:
 {
@@ -110,12 +117,13 @@ Return ONLY valid JSON:
 
     const caseData = JSON.parse(responseText);
 
+    console.log('Generated case:', caseData.prisonerName, 'wasGuilty:', caseData.wasGuilty);
+
     return {
       id: Date.now(),
       year: yearNumber,
       ...caseData,
       verdict: null,
-      wasGuilty: null, // Unknown until retirement
       consequence: null,
     };
   } catch (error) {
@@ -283,12 +291,17 @@ VERDICT MEANINGS (CRITICAL - UNDERSTAND THESE):
 CASES YOU JUDGED (with the truth revealed):
 ${caseSummaries}
 
-USE THE TRUTH TO CREATE IRONY:
+USE THE TRUTH TO CREATE IRONY AND ADJUST TONE TO MATCH THE RECORD:
 - Each case shows the verdict you gave AND whether they were actually guilty or innocent
-- Use this to create dramatic irony and tension in the narrative
+- TONE MUST MATCH THE SEVERITY OF MISTAKES:
+  * If MANY innocents were detained/executed: The narrative should be DAMNING, haunting, focusing on the tragedy
+  * If MANY guilty were released: The narrative should focus on chaos and consequences of those crimes
+  * If the record is MIXED: Balance between vindication and regret
+  * If mostly CORRECT: The narrative can be more neutral or even slightly positive
 - Highlight cases where you were RIGHT and where you were WRONG
 - Show consequences: innocents executed, guilty set free, etc.
 - Let the weight of wrong decisions speak through specific stories
+- DO NOT sugarcoat catastrophic records - if this magistrate destroyed innocent lives, the narrative must reflect that horror
 
 RETURN FORMAT - YOU MUST RETURN VALID JSON:
 {
