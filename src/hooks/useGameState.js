@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { generateCase, generateRetirementSummary } from '../services/openai';
 import { saveGameState, loadGameState, clearGameState } from '../utils/storage';
 
-const CASE_TRANSITION_DELAY = 2500; // 2.5 seconds artificial delay
+const CASE_TRANSITION_DELAY = 625; // 0.625 seconds artificial delay
 
 export function useGameState() {
   const [gameState, setGameState] = useState(() => {
