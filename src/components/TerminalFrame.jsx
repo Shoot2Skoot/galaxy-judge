@@ -44,7 +44,7 @@ export default function TerminalFrame({ children, year }) {
         </div>
 
         {/* Content Area */}
-        <div className="p-4 md:p-8 relative flex-1 min-h-0 flex flex-col">
+        <div className="p-4 md:p-8 relative flex-1 min-h-0 overflow-auto">
           {children}
         </div>
 
