@@ -66,7 +66,8 @@ Return ONLY valid JSON:
   "prosecutionEvidence": ["string", "string", ...],
   "defenseArgument": ["string", "string", ...],
   "informationGaps": ["string", "string", ...],
-  "accusedStatement": "string or null"
+  "accusedStatement": "string or null",
+  "wasGuilty": boolean (true if actually guilty, false if innocent - this is the TRUTH that will be revealed at retirement)
 }`;
 
   try {
@@ -149,6 +150,7 @@ function generateFallbackCase(yearNumber) {
         "The Medical Bay supervisor is on leave and unavailable for questioning.",
       ],
       accusedStatement: "I was fixing the ventilation. I swear I didn't touch anything else. My daughter needed help.",
+      wasGuilty: true, // He did steal the medicine for his daughter
     },
     {
       prisonerName: "Kira Chen",
@@ -173,6 +175,7 @@ function generateFallbackCase(yearNumber) {
         "Chen's personal logs are protected by privacy protocol and unavailable for review.",
       ],
       accusedStatement: "I've served this station for six years. I would never betray it. They misunderstood what I said.",
+      wasGuilty: false, // She was innocent, discussing history
     },
   ];
 
@@ -208,20 +211,14 @@ export async function generateRetirementSummary(cases, outcome = null) {
     };
   }
 
+  // Calculate judgment accuracy stats from case data
+  const innocentsDetained = completedCases.filter(c => !c.wasGuilty && c.verdict === 'detain').length;
+  const innocentsKilled = completedCases.filter(c => !c.wasGuilty && c.verdict === 'airlock').length;
+  const guiltiesReleased = completedCases.filter(c => c.wasGuilty && c.verdict === 'release').length;
+
   // Generate AI narrative (single flowing story)
   try {
-    const result = await generateCareerNarrative(completedCases, stats, outcome);
-
-    // Update cases with guilt determinations
-    const casesWithOutcomes = completedCases.map((c, index) => ({
-      ...c,
-      wasGuilty: result.caseOutcomes[index]?.guilty ?? null
-    }));
-
-    // Calculate judgment accuracy stats
-    const innocentsDetained = casesWithOutcomes.filter(c => !c.wasGuilty && c.verdict === 'detain').length;
-    const innocentsKilled = casesWithOutcomes.filter(c => !c.wasGuilty && c.verdict === 'airlock').length;
-    const guiltiesReleased = casesWithOutcomes.filter(c => c.wasGuilty && c.verdict === 'release').length;
+    const narrative = await generateCareerNarrative(completedCases, stats, outcome);
 
     return {
       stats: {
@@ -230,12 +227,17 @@ export async function generateRetirementSummary(cases, outcome = null) {
         innocentsKilled,
         guiltiesReleased
       },
-      narrative: result.narrative,
+      narrative,
     };
   } catch (error) {
     console.error("Error generating retirement narrative:", error);
     return {
-      stats,
+      stats: {
+        ...stats,
+        innocentsDetained,
+        innocentsKilled,
+        guiltiesReleased
+      },
       narrative:
         "SYSTEM ERROR: Career summary unavailable. Your record remains, but its meaning is lost to corrupted archives.",
     };
@@ -252,13 +254,13 @@ async function generateCareerNarrative(cases, stats, outcome = null) {
   const minWords = Math.max(50, baseWords - 50);
   const maxWords = Math.min(450, baseWords + 50);
 
-  // Build case summaries for the AI
+  // Build case summaries for the AI with guilt information
   const caseSummaries = cases
     .map(
       (c, index) =>
         `Case ${index + 1}: ${c.prisonerName}, ${c.age}, ${c.role}. Accused: ${
           c.crime
-        }. Your verdict: ${c.verdict.toUpperCase()}.`
+        }. Your verdict: ${c.verdict.toUpperCase()}. Truth: ${c.wasGuilty ? 'GUILTY' : 'INNOCENT'}.`
     )
     .join("\n");
 
@@ -278,25 +280,27 @@ VERDICT MEANINGS (CRITICAL - UNDERSTAND THESE):
 - DETAIN: Imprisoned (cryo-sleep, isolation, or labor camp) - alive but confined
 - AIRLOCK: EXECUTION. Thrown out the airlock into space. DEATH. The person is KILLED.
 
-CASES YOU JUDGED:
+CASES YOU JUDGED (with the truth revealed):
 ${caseSummaries}
 
-IMPORTANT - DETERMINE GUILT:
-For each case, you must decide whether the person was actually guilty or innocent based on the evidence. Use this to create irony and tension in the narrative. Consider:
-- Did the evidence truly prove guilt?
-- Were there mitigating circumstances?
-- Did later events reveal the truth?
-- Some verdicts may have been correct, others tragically wrong
+USE THE TRUTH TO CREATE IRONY:
+- Each case shows the verdict you gave AND whether they were actually guilty or innocent
+- Use this to create dramatic irony and tension in the narrative
+- Highlight cases where you were RIGHT and where you were WRONG
+- Show consequences: innocents executed, guilty set free, etc.
+- Let the weight of wrong decisions speak through specific stories
 
 RETURN FORMAT - YOU MUST RETURN VALID JSON:
 {
-  "narrative": "your ${minWords}-${maxWords} word narrative here WITH MARKDOWN FORMATTING",
-  "caseOutcomes": [
-    {"guilty": true},  // or false for innocent
-    {"guilty": false},
-    ...one entry for each case in order
-  ]
+  "narrative": "Your ${minWords}-${maxWords} word narrative here with **bold**, *italic*, and\\n\\n> blockquotes\\n\\nand paragraph breaks."
 }
+
+CRITICAL - THE NARRATIVE MUST INCLUDE MARKDOWN:
+- The narrative string MUST contain actual markdown syntax (**text**, *text*, > quote)
+- Use \\n\\n for paragraph breaks (two newlines between paragraphs)
+- Use **bold** for key moments (2-4 times)
+- Use *italics* for reflection (more liberal)
+- Use > blockquotes for impactful statements (1-2 max)
 
 FORMATTING RULES (CRITICAL - READ CAREFULLY):
 You MUST use markdown formatting to make the narrative more impactful and readable. Use these formats ONLY:
@@ -353,12 +357,18 @@ AVOID:
 - Saying "vignette" or "case #"
 - Euphemizing death for AIRLOCK verdicts - be direct that they were killed
 
-EXAMPLE TONE:
-"They served fifteen years. Some said lenient, others harsh - the record shows both. There was the water technician accused of hoarding. Released. She died in an accident two years later, but the forty liters in her quarters kept her neighbors alive during the lockdown. Then the young engineer charged with sabotage. Detained for six years. The malfunction he'd been blamed for happened twice more after. Still, he never returned to engineering work. And the supply officer sent to the airlock for distribution fraud - executed at thirty-two. The thefts continued after her death, same patterns, different hands."
+EXAMPLE WITH MARKDOWN (COPY THIS STYLE):
+"They served fifteen years. *Some said lenient, others harsh—the record shows both.*
+
+**The water technician was released.** She died in an accident two years later, but the forty liters found in her quarters kept her neighbors alive during the lockdown that followed.
+
+> Records indicated the young engineer, detained for six years on sabotage charges, was innocent. The malfunction he'd been blamed for happened twice more after his imprisonment.
+
+Then there was the supply officer. **Executed at thirty-two for distribution fraud.** The thefts continued after her death, same patterns, different hands. *It emerged she had been covering for someone with higher clearance.*"
 
 Write as flowing prose. Weave statistics and stories together naturally.
 
-CRITICAL: Return ONLY valid JSON in the exact format specified above. No markdown formatting, no extra text.`;
+CRITICAL: Return ONLY valid JSON in the exact format specified above. The "narrative" field MUST contain markdown formatting (bold, italic, blockquotes, paragraph breaks). Do not include any text outside the JSON structure.`;
 
   const response = await fetch(API_ENDPOINT, {
     method: "POST",
@@ -372,7 +382,9 @@ CRITICAL: Return ONLY valid JSON in the exact format specified above. No markdow
       reasoning: {
         effort: "minimal",
       },
-      verbosity: "low",
+      text: {
+        verbosity: "low",
+      },
     }),
   });
 
@@ -394,8 +406,8 @@ CRITICAL: Return ONLY valid JSON in the exact format specified above. No markdow
   // Parse the JSON response
   const parsed = JSON.parse(responseText);
 
-  return {
-    narrative: parsed.narrative,
-    caseOutcomes: parsed.caseOutcomes || []
-  };
+  console.log('AI returned narrative:', parsed.narrative);
+  console.log('First 200 chars:', parsed.narrative.substring(0, 200));
+
+  return parsed.narrative;
 }

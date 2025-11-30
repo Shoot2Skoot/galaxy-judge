@@ -99,8 +99,7 @@ export function useGameState() {
     const caseWithVerdict = {
       ...gameState.currentCase,
       verdict,
-      // In real implementation, AI determines guilt/consequences at retirement
-      wasGuilty: Math.random() > 0.5, // Placeholder
+      // wasGuilty is already set by the case generation AI
     };
 
     const newPastCases = [...gameState.pastCases, caseWithVerdict];
