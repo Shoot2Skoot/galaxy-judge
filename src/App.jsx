@@ -39,8 +39,8 @@ function App() {
 
     return (
       <TerminalFrame year="--">
-        <Panel className="mt-8">
-          <div className="text-center mb-8 pt-4">
+        <Panel className="mt-4 sm:mt-8 welcome-panel">
+          <div className="text-center mb-6 sm:mb-8 pt-2 sm:pt-4">
             <div className="text-4xl md:text-6xl font-bold tracking-widest text-term-green mb-2">
               MAGISTRATE
             </div>
@@ -49,7 +49,7 @@ function App() {
             </div>
           </div>
 
-          <div className="space-y-4 text-term-green/80 text-sm md:text-base leading-relaxed mb-8 px-4">
+          <div className="space-y-4 text-term-green/80 text-sm md:text-base leading-relaxed mb-6 sm:mb-8 px-1 sm:px-4">
             <p>
               You are a Magistrate on a space station in a dystopian future. Resources are scarce.
               Law is whatever you say it is.
