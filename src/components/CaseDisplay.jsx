@@ -45,7 +45,7 @@ export default function CaseDisplay({ caseData, onVerdict, onRetire, casesJudged
   };
 
   return (
-    <div className="flex flex-col gap-4 md:gap-6 w-full flex-1">
+    <div className="flex flex-col gap-4 md:gap-6 w-full flex-1 min-h-0 overflow-auto">
 
       {/* Status Section */}
       <Panel className="w-full">
@@ -86,7 +86,7 @@ export default function CaseDisplay({ caseData, onVerdict, onRetire, casesJudged
       </Panel>
 
       {/* Tabbed Content */}
-      <div className="w-full flex flex-col flex-1 min-h-0">
+      <div className="w-full flex flex-col">
         {/* Tab Bar */}
         <div className="flex flex-wrap gap-1 flex-shrink-0">
           <TabButton
@@ -128,7 +128,7 @@ export default function CaseDisplay({ caseData, onVerdict, onRetire, casesJudged
 
         {/* Tab Content */}
         <Panel
-          className="w-full border-t-0 flex-1 min-h-0"
+          className="w-full border-t-0"
           title={
             activeTab === 'charges' ? 'Charges' :
             activeTab === 'prosecution' ? 'Prosecution' :
@@ -138,7 +138,6 @@ export default function CaseDisplay({ caseData, onVerdict, onRetire, casesJudged
           }
           showTopLeft={activeTab === 'charges'}
           showTopRight={activeTab === 'verdict'}
-          allowOverflow={true}
         >
           {activeTab === 'charges' && (
             <div className="space-y-4">
