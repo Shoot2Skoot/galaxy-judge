@@ -32,8 +32,8 @@ export default function LoadingScreen({ message = 'LOADING CASE DATA', duration 
   const steps = isRetirement ? RETIREMENT_LOADING_STEPS : CASE_LOADING_STEPS;
 
   useEffect(() => {
-    // For case loading: 2500ms total, for retirement: cycle continuously
-    const actualDuration = duration || (isRetirement ? null : 2500);
+    // For case loading: 1500ms total, for retirement: cycle continuously
+    const actualDuration = duration || (isRetirement ? null : 1500);
 
     if (actualDuration) {
       // Fixed duration: divide time evenly among steps
