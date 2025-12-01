@@ -51,25 +51,14 @@ function App() {
 
           <div className="space-y-4 text-term-green/80 text-sm md:text-base leading-relaxed mb-6 sm:mb-8 px-1 sm:px-2">
             <p>
-              The station is dying. Oxygen recyclers fail. Surveillance archives corrupt. Security personnel
-              disappear. But the prisoners keep coming.
+              The file arrives once a year. Sometimes the surveillance footage is corrupted. Sometimes the witnesses
+              have disappeared. Sometimes there's a confession, retracted hours later.
             </p>
             <p>
-              You are the Magistrate. Once a year, Station Command sends you their worst case—the one crime
-              serious enough to warrant permanent detention or execution. The investigation is already over.
-              The evidence is whatever survived the station's decay.
+              The holding cell uses oxygen. The station doesn't have much to spare.
             </p>
             <p>
-              Records are incomplete. Witnesses are unreliable. You have no authority to demand more. The
-              accused sits in a cell that costs oxygen and food the station can't spare. Command wants your
-              verdict now.
-            </p>
-            <p>
-              Release them, and you may unleash a killer. Condemn them, and you may murder an innocent.
-              You won't know which until your career ends and the archives reveal the truth.
-            </p>
-            <p className="text-term-green/60 italic text-sm">
-              Make your judgments. Live with the consequences.
+              Command is waiting for your verdict.
             </p>
           </div>
 
