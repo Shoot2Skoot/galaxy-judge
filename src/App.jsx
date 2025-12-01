@@ -51,15 +51,26 @@ function App() {
 
           <div className="space-y-4 text-term-green/80 text-sm md:text-base leading-relaxed mb-6 sm:mb-8 px-1 sm:px-2">
             <p>
-              You are a Magistrate on a space station in a dystopian future. Resources are scarce.
-              Law is whatever you say it is.
+              The station is dying. Oxygen recyclers fail. Surveillance archives corrupt. Security personnel
+              disappear. But the prisoners keep coming.
             </p>
             <p>
-              Your job is to judge prisoners—one per year—with incomplete information and
-              irreversible consequences.
+              You are the Magistrate. Once a year, Station Command sends you their worst case—the one crime
+              serious enough to warrant permanent detention or execution. The investigation is already over.
+              The evidence is whatever survived the station's decay.
             </p>
-            <p>You never have all the facts. You decide anyway.</p>
-            <p>You only learn how you did when you retire.</p>
+            <p>
+              Records are incomplete. Witnesses are unreliable. You have no authority to demand more. The
+              accused sits in a cell that costs oxygen and food the station can't spare. Command wants your
+              verdict now.
+            </p>
+            <p>
+              Release them, and you may unleash a killer. Condemn them, and you may murder an innocent.
+              You won't know which until your career ends and the archives reveal the truth.
+            </p>
+            <p className="text-term-green/60 italic text-sm">
+              Make your judgments. Live with the consequences.
+            </p>
           </div>
 
           <div className="space-y-4">
