@@ -97,7 +97,14 @@ MANDATORY CONSTRAINTS TO ENSURE VARIETY (incorporate these naturally):
 - Include one of these complicating factors in the evidence: [${selectedComplications.join(", ")}]
 - The severity should mention impact on one of these: [${selectedAffectedParties.join(", ")}]
 
-- Severity: (8-20 words) Explain practical impact OR show emotional stakes OR reveal external pressure. Make it matter.
+CRITICAL - AVOID OVERUSED EMOTIONAL MANIPULATION:
+- DO NOT mention the accused's children or family suffering if convicted (use this VERY rarely, if at all)
+- Focus on the CRIME'S impact on the station, not the personal consequences of conviction
+- Vary your emotional appeals - children are overused and predictable
+
+- Severity: (8-20 words) Explain what the crime DID and its impact on the station/crew. NOT what will happen to the accused's family if convicted. Focus on the crime itself.
+  Examples of GOOD severity: "Stolen navigation data could compromise station security against raiders" or "Sabotaged life support endangered 200 crew members in Sector 4"
+  Examples of BAD severity: "If convicted, their children will enter ward care" or "They have a sick child who needs them"
 
 - Prosecution: (2-4 passionate arguments, 15-35 words each)
   WRITE AS A PROSECUTOR TRYING TO CONVINCE THE JUDGE. Not dry facts - persuasive rhetoric.

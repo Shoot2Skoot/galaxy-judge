@@ -118,7 +118,6 @@ export const stolenItems = [
 
 // SPECIFIC MOTIVATIONS - Why they might have done it
 export const motivations = [
-  "a child with a terminal illness requiring unavailable treatment",
   "gambling debts to dangerous crew members",
   "blackmail from someone who knows their secret past",
   "trying to contact family on an embargoed colony",
@@ -134,10 +133,16 @@ export const motivations = [
   "genuine belief they were helping the station",
   "addiction to banned substances",
   "trying to escape the station",
-  "protecting their children from reassignment",
   "exposing what they believe is corruption",
   "preserving cultural heritage Command wants erased",
-  "survival instinct in extreme circumstances"
+  "survival instinct in extreme circumstances",
+  "religious devotion to a banned faith",
+  "attempting to reunite with a lost loved one",
+  "trying to buy passage off the station",
+  "seeking medical treatment Command denies exists",
+  "avenging a friend's suspicious death",
+  "trying to prevent a disaster they foresee",
+  "loyalty to a crew faction over Command"
 ];
 
 // SPECIFIC LOCATIONS - Where the crime occurred
@@ -181,7 +186,6 @@ export const complications = [
   "the accused is a decorated veteran with 20 years of service",
   "the accused's testimony could expose corruption in Command",
   "the crime occurred during a station-wide power failure",
-  "the accused is the sole guardian of three young children",
   "the victim had previously filed false accusations",
   "the evidence was handled by someone with a personal grudge",
   "the accused's alibi depends on admitting to a different crime",
@@ -195,13 +199,18 @@ export const complications = [
   "the crime exposed a critical safety flaw in station systems",
   "the investigator has a history of botched cases",
   "the accused surrendered voluntarily and confessed immediately",
-  "the crime occurred during a period of mass civil unrest"
+  "the crime occurred during a period of mass civil unrest",
+  "the accused is the only person who knows critical system passwords",
+  "the evidence contradicts itself in subtle but important ways",
+  "the accused has a identical twin also serving on the station",
+  "the prosecution's key witness has memory implant damage",
+  "the accused is scheduled for essential surgery next week",
+  "the crime occurred in a dead zone with no surveillance"
 ];
 
 // AFFECTED PARTIES - Who/what was impacted
 export const affectedParties = [
   "the elderly population dependent on specialized medications",
-  "the children's education program",
   "the structural integrity of the habitat modules",
   "the morale of an already demoralized crew",
   "the station's fragile peace with external factions",
@@ -219,7 +228,13 @@ export const affectedParties = [
   "the preservation of irreplaceable historical data",
   "the functionality of essential automated systems",
   "the credibility of the medical staff",
-  "the station's already strained power reserves"
+  "the station's already strained power reserves",
+  "the civilian workforce's sense of security",
+  "the station's communication with the outside universe",
+  "the fragile ecosystem of the agriculture domes",
+  "the station's ability to manufacture critical components",
+  "the religious and cultural diversity protections",
+  "the efficiency of waste recycling operations"
 ];
 
 export const evidenceTypes = [
