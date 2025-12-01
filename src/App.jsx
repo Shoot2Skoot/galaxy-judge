@@ -50,16 +50,26 @@ function App() {
           </div>
 
           <div className="space-y-4 text-term-green/80 text-sm md:text-base leading-relaxed mb-6 sm:mb-8 px-1 sm:px-2">
-            <p>
-              The file arrives once a year. Sometimes the surveillance footage is corrupted. Sometimes the witnesses
-              have disappeared. Sometimes there's a confession, retracted hours later.
+            <p className="font-bold text-lg">
+              SUBJECT: ORBITAL MAGISTRATE, POST 7-DELTA-11
             </p>
             <p>
-              The holding cell uses oxygen. The station doesn't have much to spare.
+              To the Honorable,
             </p>
             <p>
-              Command is waiting for your verdict.
+              Magistrate, you now ascend to the Apex Court. This appointment is more than a promotion; it is a sacred trust placed upon the singular point of the judicial branch on Station 7.
             </p>
+            <p>
+              Your authority is absolute. You hold the power of life, death, and order. The Council’s eyes are on every docket item, as these are the most critical cases determining our station's security.
+            </p>
+            <p>
+              You will be judged not only by your decisions but also by the fairness and impartiality of your process. The Apex Court will be the most scrutinized branch of the station, and your legacy will be written in the stars.
+            </p>
+            <p>
+              Station Authority is proud to present you with your new assignment. May your legacy be written in the stars.
+            </p>
+            <p className="text-right">-------------</p>
+            <p className="text-right">Station Authority</p>
           </div>
 
           <div className="space-y-4">

@@ -34,33 +34,53 @@ export async function generateCase(pastCases = [], yearNumber = 1) {
 
 WRITING STYLE: "TV sci-fi" - accessible like The Expanse or Battlestar Galactica. Clear, concrete, understandable to average viewers. Avoid jargon. Use specific details instead of technical terms.
 
-IMPACT WITHOUT MELODRAMA:
-- Focus on systemic consequences (affects food rations for 300 people, last oxygen shipment for 6 months)
-- Station-specific scarcity (medical supplies, water recycling, power grid)
-- Practical cascading effects (one theft creates 5 more problems)
-- NOT: dying children, sick relatives, emotional manipulation
-- YES: concrete stakes that feel real and constrained
+CRITICAL: VARY YOUR APPROACH. Never generate formulaic cases. Each case should feel unique in structure, tone, and moral weight.
+
+MORAL ARCHETYPES (rotate through these - don't repeat patterns):
+1. Guilty but sympathetic: Did the crime out of desperation or love (e.g., stealing oxygen for a dying child)
+2. Innocent but unlikeable: Abrasive personality everyone wants gone, but didn't do it
+3. Technically guilty, morally justified: Broke a rule to expose corruption or prevent greater harm
+4. Probably innocent, acts guilty: Hiding something unrelated that makes them seem suspicious
+5. Guilty of something else: Didn't commit THIS crime, but clearly did something worse
+6. Completely innocent, terrible timing: Wrong place, wrong person to accuse
+7. Guilty and unrepentant: Did it, knows it, doesn't care
+8. Innocent but doomed by circumstances: Everything points to them despite being innocent
+
+EVIDENCE VARIETY (don't balance every case the same way):
+- Some cases: Overwhelming prosecution, weak defense (but they're actually innocent)
+- Some cases: Strong defense, flimsy prosecution (but they're actually guilty)
+- Some cases: Balanced evidence either way (genuinely uncertain)
+- Include complicating relationships: "Witness is the accused's ex-partner" or "Alibi comes from someone who owes them money"
+
+ACCUSED STATEMENT VOICES (give each person a distinct personality):
+- Defiant: "I've served twelve years. Execute me if you want, I won't beg."
+- Desperate/rambling: "My daughter needs me—she's in medical bay—please you have to understand—"
+- Eerily calm: "I accept whatever you decide. I'm at peace."
+- Angry: "This is garbage! Check the logs again—someone's setting me up!"
+- Oversharing/incriminating: "I was near the cargo bay but I can't say why—it's personal—"
+- Confused/defeated: "I don't... I don't understand how this happened..."
+- Cold/professional: "I've submitted my statement. I have nothing further to add."
+- Leave it null sometimes (they refused to speak, or are too traumatized)
+
+SHOW STAKES (include 1-2 of these details where appropriate):
+- Personal consequences: "If convicted, their two children (ages 6 and 9) will enter general ward care"
+- Station pressure: "Medical has reported three deaths this week from supply shortages"
+- Relationships: "The accused's supervisor vouches for them—but they're also romantic partners"
+- Previous context: "Last week's controversial release led to riots in Sector 7"
+- Credibility issues: "Three crew members vouch for character, but all owe the accused money"
 
 Generate a case with:
 - Name: Choose from [${selectedFirstNames.join(", ")}] and [${selectedLastNames.join(", ")}]
 - Age: 18-70
 - Gender: Infer from the first name (male/female/non-binary)
 - Role: Choose from [${selectedRoles.join(", ")}]
-- Crime: (3-8 words) Category: [${selectedCrimes.join(" or ")}]. Be specific and clear.
-- Severity: (8-15 words) Explain the practical impact on the station. What breaks if you get this wrong?
-- Prosecution: 2-3 pieces of evidence (5-15 words each). Concrete facts that suggest guilt.
-- Defense: 2-3 arguments (5-15 words each). Concrete facts that suggest innocence or mitigation.
-- Missing Info: 1-2 gaps (5-15 words each). What key information is unavailable?
-- Statement: (OPTIONAL, 10-30 words) A brief statement from the accused - a plea, justification, explanation, or anything they might say if given the opportunity before verdict. This can be left out entirely if it doesn't fit the case or character.
-- wasGuilty: CRITICAL - Determine if they actually committed the crime. Aim for roughly 50/50 distribution over many cases (some guilty, some innocent). This creates moral complexity.
-
-The case should have legitimate arguments on both sides. Make the player genuinely uncertain.
-
-IMPORTANT - GUILT DISTRIBUTION:
-- wasGuilty should be TRUE roughly 50% of the time (they did commit the crime)
-- wasGuilty should be FALSE roughly 50% of the time (they were framed, misunderstood, or innocent)
-- The evidence should be ambiguous enough that the player can't easily tell
-- Create REAL moral dilemmas where wrong verdicts have serious consequences
+- Crime: (3-8 words) Category: [${selectedCrimes.join(" or ")}]. Be specific and clear. VARY THE TYPES.
+- Severity: (8-20 words) Explain practical impact OR show emotional stakes OR reveal external pressure. Make it matter.
+- Prosecution: 2-4 pieces of evidence. VARY THE STRENGTH. Sometimes overwhelming, sometimes weak. Include relationship complications where relevant.
+- Defense: 2-4 arguments. VARY THE STRENGTH. Sometimes a rock-solid alibi, sometimes desperate grasping. Include complicating details.
+- Missing Info: 1-3 critical gaps. What would actually change the verdict if you knew it?
+- Statement: (OPTIONAL, 10-40 words) Give them a DISTINCT VOICE. Make them feel like a real person, not a legal document. Can be null if they refused to speak or it doesn't fit.
+- wasGuilty: CRITICAL - TRUE = actually guilty, FALSE = actually innocent. Aim for 50/50. Mix sympathetic guilty people with unlikeable innocent people.
 
 Return ONLY valid JSON:
 {
