@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Quotes, Detective, ShieldStar, SealQuestion, Gavel, DoorOpen, HourglassHigh, Skull } from '@phosphor-icons/react';
 import Panel from './Panel';
 import DataRow from './DataRow';
@@ -43,6 +43,59 @@ export default function CaseDisplay({ caseData, onVerdict, onRetire, casesJudged
   const cancelRetire = () => {
     setShowRetireModal(false);
   };
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    // Tab order for keyboard navigation
+    const tabs = ['charges', 'prosecution', 'defense', 'gaps', 'verdict'];
+
+    const handleKeyDown = (e) => {
+      // Ignore if modal is open or if user is typing in an input
+      if (showRetireModal || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return;
+      }
+
+      // Tab navigation: Left/Right arrows
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        const currentIndex = tabs.indexOf(activeTab);
+        let newIndex;
+
+        if (e.key === 'ArrowLeft') {
+          newIndex = currentIndex - 1;
+          if (newIndex < 0) newIndex = tabs.length - 1; // Wrap to end
+        } else {
+          newIndex = currentIndex + 1;
+          if (newIndex >= tabs.length) newIndex = 0; // Wrap to beginning
+        }
+
+        setActiveTab(tabs[newIndex]);
+      }
+
+      // Verdict selection (only on verdict tab)
+      if (activeTab === 'verdict') {
+        if (e.key === 'r' || e.key === 'R') {
+          e.preventDefault();
+          setSelectedVerdict('release');
+        } else if (e.key === 'd' || e.key === 'D') {
+          e.preventDefault();
+          setSelectedVerdict('detain');
+        } else if (e.key === 'x' || e.key === 'X') {
+          e.preventDefault();
+          setSelectedVerdict('airlock');
+        } else if (e.key === 'Enter' && selectedVerdict) {
+          e.preventDefault();
+          if (onVerdict) {
+            onVerdict(selectedVerdict);
+            setSelectedVerdict(null);
+          }
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeTab, selectedVerdict, showRetireModal, onVerdict]);
 
   return (
     <div className="flex flex-col gap-4 md:gap-6 w-full">
