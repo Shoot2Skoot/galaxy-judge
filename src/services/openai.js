@@ -76,8 +76,25 @@ Generate a case with:
 - Role: Choose from [${selectedRoles.join(", ")}]
 - Crime: (3-8 words) Category: [${selectedCrimes.join(" or ")}]. Be specific and clear. VARY THE TYPES.
 - Severity: (8-20 words) Explain practical impact OR show emotional stakes OR reveal external pressure. Make it matter.
-- Prosecution: 2-4 pieces of evidence. VARY THE STRENGTH. Sometimes overwhelming, sometimes weak. Include relationship complications where relevant.
-- Defense: 2-4 arguments. VARY THE STRENGTH. Sometimes a rock-solid alibi, sometimes desperate grasping. Include complicating details.
+
+- Prosecution: (2-4 passionate arguments, 15-35 words each)
+  WRITE AS A PROSECUTOR TRYING TO CONVINCE THE JUDGE. Not dry facts - persuasive rhetoric.
+  Address the Magistrate directly. Use emotional appeals. Point out implications. Challenge doubts.
+  Examples:
+  * "The logs don't lie, Magistrate - three separate systems place Chen in that corridor. No authorization, no explanation that holds water."
+  * "We've had four thefts this month. Four. Medical is rationing antibiotics because of people like this. How many more before we act?"
+  * "Her supervisor vouches for her? Her supervisor is also her partner. Convenient alibi from a convenient source."
+  VARY THE STRENGTH. Sometimes overwhelming, sometimes reaching. Include relationship complications where relevant.
+
+- Defense: (2-4 passionate arguments, 15-35 words each)
+  WRITE AS A DEFENSE ADVOCATE TRYING TO SAVE THEIR CLIENT. Not neutral points - desperate persuasion.
+  Appeal to reason. Challenge prosecution. Humanize the accused. Point out gaps.
+  Examples:
+  * "My client has served this station for twelve years without incident. Twelve years! One corrupted log file doesn't erase a lifetime of service."
+  * "The prosecution wants you to execute someone based on a door scan? No camera footage, no witnesses, just a single entry in a system we all know glitches daily."
+  * "Yes, she was there - because she was assigned there! Maintenance doesn't ask permission to fix life support, Magistrate."
+  VARY THE STRENGTH. Sometimes rock-solid alibi, sometimes grasping at straws. Include complicating details.
+
 - Missing Info: 1-3 critical gaps. What would actually change the verdict if you knew it?
 - Statement: (OPTIONAL, 10-40 words) Give them a DISTINCT VOICE. Make them feel like a real person, not a legal document. Can be null if they refused to speak or it doesn't fit.
 - wasGuilty: CRITICAL - TRUE = actually guilty, FALSE = actually innocent. Aim for 50/50. Mix sympathetic guilty people with unlikeable innocent people.
