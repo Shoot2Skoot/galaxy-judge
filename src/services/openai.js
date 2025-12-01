@@ -10,6 +10,11 @@ import {
   lastNames,
   crimeCategories,
   stationRoles,
+  stolenItems,
+  motivations,
+  stationLocations,
+  complications,
+  affectedParties,
   randomSelect,
 } from "../data/gameData";
 
@@ -29,6 +34,11 @@ export async function generateCase(pastCases = [], yearNumber = 1) {
   const selectedLastNames = randomSelect(lastNames, 3);
   const selectedCrimes = randomSelect(crimeCategories, 2);
   const selectedRoles = randomSelect(stationRoles, 3);
+  const selectedStolenItems = randomSelect(stolenItems, 3);
+  const selectedMotivations = randomSelect(motivations, 2);
+  const selectedLocations = randomSelect(stationLocations, 3);
+  const selectedComplications = randomSelect(complications, 2);
+  const selectedAffectedParties = randomSelect(affectedParties, 2);
 
   const systemPrompt = `You are generating cases for Magistrate - a game about judging people on a space station with incomplete information.
 
@@ -70,11 +80,23 @@ SHOW STAKES (include 1-2 of these details where appropriate):
 - Credibility issues: "Three crew members vouch for character, but all owe the accused money"
 
 Generate a case with:
-- Name: Choose from [${selectedFirstNames.join(", ")}] and [${selectedLastNames.join(", ")}]
+- Name: Choose from [${selectedFirstNames.join(
+    ", "
+  )}] and [${selectedLastNames.join(", ")}]
 - Age: 18-70
 - Gender: Infer from the first name (male/female/non-binary)
 - Role: Choose from [${selectedRoles.join(", ")}]
-- Crime: (3-8 words) Category: [${selectedCrimes.join(" or ")}]. Be specific and clear. VARY THE TYPES.
+- Crime: (3-8 words) Category: [${selectedCrimes.join(
+    " or "
+  )}]. Be specific and clear. VARY THE TYPES.
+
+MANDATORY CONSTRAINTS TO ENSURE VARIETY (incorporate these naturally):
+- If the crime involves theft/contraband, it MUST involve one of these items: [${selectedStolenItems.join(", ")}]
+- Consider incorporating one of these possible motivations: [${selectedMotivations.join(", ")}]
+- The crime or evidence should reference one of these locations: [${selectedLocations.join(", ")}]
+- Include one of these complicating factors in the evidence: [${selectedComplications.join(", ")}]
+- The severity should mention impact on one of these: [${selectedAffectedParties.join(", ")}]
+
 - Severity: (8-20 words) Explain practical impact OR show emotional stakes OR reveal external pressure. Make it matter.
 
 - Prosecution: (2-4 passionate arguments, 15-35 words each)
@@ -125,7 +147,7 @@ Return ONLY valid JSON:
         model: MODEL,
         input: systemPrompt,
         reasoning: {
-          effort: "minimal",
+          effort: "medium",
         },
       }),
     });
@@ -154,7 +176,12 @@ Return ONLY valid JSON:
 
     const caseData = JSON.parse(responseText);
 
-    console.log('Generated case:', caseData.prisonerName, 'wasGuilty:', caseData.wasGuilty);
+    console.log(
+      "Generated case:",
+      caseData.prisonerName,
+      "wasGuilty:",
+      caseData.wasGuilty
+    );
 
     return {
       id: Date.now(),
@@ -194,7 +221,8 @@ function generateFallbackCase(yearNumber) {
         "Camera footage for the corridor is corrupted during the relevant time window.",
         "The Medical Bay supervisor is on leave and unavailable for questioning.",
       ],
-      accusedStatement: "I was fixing the ventilation. I swear I didn't touch anything else. My daughter needed help.",
+      accusedStatement:
+        "I was fixing the ventilation. I swear I didn't touch anything else. My daughter needed help.",
       wasGuilty: true, // He did steal the medicine for his daughter
     },
     {
@@ -219,7 +247,8 @@ function generateFallbackCase(yearNumber) {
         "No audio recording exists of the conversation in question.",
         "Chen's personal logs are protected by privacy protocol and unavailable for review.",
       ],
-      accusedStatement: "I've served this station for six years. I would never betray it. They misunderstood what I said.",
+      accusedStatement:
+        "I've served this station for six years. I would never betray it. They misunderstood what I said.",
       wasGuilty: false, // She was innocent, discussing history
     },
   ];
@@ -257,20 +286,30 @@ export async function generateRetirementSummary(cases, outcome = null) {
   }
 
   // Calculate judgment accuracy stats from case data
-  const innocentsDetained = completedCases.filter(c => !c.wasGuilty && c.verdict === 'detain').length;
-  const innocentsKilled = completedCases.filter(c => !c.wasGuilty && c.verdict === 'airlock').length;
-  const guiltiesReleased = completedCases.filter(c => c.wasGuilty && c.verdict === 'release').length;
+  const innocentsDetained = completedCases.filter(
+    (c) => !c.wasGuilty && c.verdict === "detain"
+  ).length;
+  const innocentsKilled = completedCases.filter(
+    (c) => !c.wasGuilty && c.verdict === "airlock"
+  ).length;
+  const guiltiesReleased = completedCases.filter(
+    (c) => c.wasGuilty && c.verdict === "release"
+  ).length;
 
   // Generate AI narrative (single flowing story)
   try {
-    const narrative = await generateCareerNarrative(completedCases, stats, outcome);
+    const narrative = await generateCareerNarrative(
+      completedCases,
+      stats,
+      outcome
+    );
 
     return {
       stats: {
         ...stats,
         innocentsDetained,
         innocentsKilled,
-        guiltiesReleased
+        guiltiesReleased,
       },
       narrative,
     };
@@ -281,7 +320,7 @@ export async function generateRetirementSummary(cases, outcome = null) {
         ...stats,
         innocentsDetained,
         innocentsKilled,
-        guiltiesReleased
+        guiltiesReleased,
       },
       narrative:
         "SYSTEM ERROR: Career summary unavailable. Your record remains, but its meaning is lost to corrupted archives.",
@@ -305,13 +344,21 @@ async function generateCareerNarrative(cases, stats, outcome = null) {
       (c, index) =>
         `Case ${index + 1}: ${c.prisonerName}, ${c.age}, ${c.role}. Accused: ${
           c.crime
-        }. Your verdict: ${c.verdict.toUpperCase()}. Truth: ${c.wasGuilty ? 'GUILTY' : 'INNOCENT'}.`
+        }. Your verdict: ${c.verdict.toUpperCase()}. Truth: ${
+          c.wasGuilty ? "GUILTY" : "INNOCENT"
+        }.`
     )
     .join("\n");
 
   const outcomeText = outcome
-    ? `\n\nCAREER ENDING: The magistrate ${outcome === 'retired' ? 'retired voluntarily' : outcome === 'died' ? 'died in service' : 'was ousted from their position'}. Reflect this in the narrative appropriately.`
-    : '';
+    ? `\n\nCAREER ENDING: The magistrate ${
+        outcome === "retired"
+          ? "retired voluntarily"
+          : outcome === "died"
+          ? "died in service"
+          : "was ousted from their position"
+      }. Reflect this in the narrative appropriately.`
+    : "";
 
   const systemPrompt = `You are writing a career retrospective for a retired Magistrate. This should read like an obituary or a personal reflection - one flowing narrative, not separate sections.${outcomeText}
 
@@ -456,8 +503,8 @@ CRITICAL: Return ONLY valid JSON in the exact format specified above. The "narra
   // Parse the JSON response
   const parsed = JSON.parse(responseText);
 
-  console.log('AI returned narrative:', parsed.narrative);
-  console.log('First 200 chars:', parsed.narrative.substring(0, 200));
+  console.log("AI returned narrative:", parsed.narrative);
+  console.log("First 200 chars:", parsed.narrative.substring(0, 200));
 
   return parsed.narrative;
 }
